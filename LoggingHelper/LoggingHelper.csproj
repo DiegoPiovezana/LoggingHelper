@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+     <TargetFrameworks>net452;netstandard2.0;netstandard2.1</TargetFrameworks>
+     <ApplicationIcon>LoggingHelper_icon.ico</ApplicationIcon>
+     <GenerateDocumentationFile>True</GenerateDocumentationFile>
+     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+     <Title>LoggingHelper</Title>
+     <PackageIcon>LoggingHelper_icon.png</PackageIcon>
+     <Authors>Diêgo Piovezana</Authors>
+     <Company>DiegoPiov</Company>
+     <Description>Library for easy logging.</Description>
+     <PackageProjectUrl>https://github.com/DiegoPiovezana/LoggingHelper</PackageProjectUrl>
+     <RepositoryUrl>https://github.com/DiegoPiovezana/LoggingHelper</RepositoryUrl>
+     <PackageTags>log;loggin;logger;tracing;eventlog;logfiles</PackageTags>
+     <PackageReleaseNotes>Library for easy logging.</PackageReleaseNotes>
+     <PackageLicenseFile>License.txt</PackageLicenseFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="LoggingHelper_icon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\Design\LoggingHelper_icon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\License.txt">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>

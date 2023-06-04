@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "ngO+bPgtqCPfe5Vuhdc02m8NaGdauEi8sBlKaRss9F3wTrJX5ubr00A35OrYW2CkZwo9emveOyuj5NpXBBn7rA==",
+  "success": true,
+  "projectFilePath": "A:\\Outros arquivos\\Projetos\\LoggingHelper\\LoggingHelper\\LoggingHelper\\LoggingHelper.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\diego\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\diego\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
