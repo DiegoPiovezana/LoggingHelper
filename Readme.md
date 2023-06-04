@@ -13,8 +13,8 @@ Library for easy logging..<br/>
 - Use the _'Write'_ method to write logs to the file.
 - _'GetCallingMethodName'_ allows to identify who called considering stack level.
 - Old logs can be automatically deleted through the initial check method (_'Check'_).
-- Use the _'_LevelStack'_ property to define the maximum level to be considered in the method stack.
-- The 'LogPath' property represents the location and file where the log should be recorded.
+- Use the _'LevelStack'_ property to define the maximum level to be considered in the method stack.
+- The _'LogPath'_ property represents the location and file where the log should be recorded.
 - _'LogLevel'_ represents the minimum level of log to be recorded in the file.
 - More features coming soon.
 
@@ -36,7 +36,7 @@ namespace App
             try
             {
                 LoggingHelper.Check();
-                LoggingHelper.Write("This is a this is a trace log message.", 0, "Start application.");
+                LoggingHelper.Write("This is a trace log message.", 0, "Start application.");
                 LoggingHelper.Write("Debug message.", 1, null);
                 LoggingHelper.Write("This is a message for an information log.", 2, null);                
             }
