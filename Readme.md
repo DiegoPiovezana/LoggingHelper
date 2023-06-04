@@ -9,13 +9,13 @@ Library for easy logging..<br/>
 
 ✔ AVAILABLE FEATURES:<br/>
 - Allows logging with different levels of severity.
-- Use the 'Check' method to perform all validations before writing the log.
-- Use the 'Write' method to write logs to the file.
-- The 'GetCallingMethodName' method allows identifying the name of the calling method at different levels of the call stack.
-- Old logs can be automatically deleted through the initial check method ('Check').
-- Use the 'LevelStack' property to define the maximum level to be considered in the method stack.
+- Use the _'Check'_ method to perform all validations before writing the log.
+- Use the _'Write'_ method to write logs to the file.
+- _'GetCallingMethodName'_ allows to identify who called considering stack level.
+- Old logs can be automatically deleted through the initial check method (_'Check'_).
+- Use the _'_LevelStack'_ property to define the maximum level to be considered in the method stack.
 - The 'LogPath' property represents the location and file where the log should be recorded.
-- 'LogLevel' represents the minimum level of log to be recorded in the file.
+- _'LogLevel'_ represents the minimum level of log to be recorded in the file.
 - More features coming soon.
 
 <br/><br/>
