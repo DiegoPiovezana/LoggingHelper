@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -97,10 +95,11 @@ namespace LH
             DirectoryInfo di = Directory.CreateDirectory(Path.GetDirectoryName(LogPath));
             if (hidden) di.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
 
-            Write("Validating log...", 0, "CheckLog"); // To create a log file if it doesn't exist
-
-            DateTime creationLog = File.GetCreationTime(LogPath);
-            if ((DateTime.Now - creationLog).TotalDays > days) DeleteLog();            
+            if (File.Exists(LogPath))
+            {
+                DateTime creationLog = File.GetCreationTime(LogPath);
+                if ((DateTime.Now - creationLog).TotalDays > days) DeleteLog();
+            }
         }
 
         /// <summary>
@@ -178,22 +177,27 @@ namespace LH
             }
         }
 
-
         /// <summary>
         /// Write a message to the log file.
         /// </summary>
         /// <param name="message">Message to be logged</param>
-        /// <param name="indLevel">Set the level of this log. TRACE = 0, DEBUG = 1, INFO = 2, WARNING = 3, ERROR = 4, CRITICAL = 5</param>
+        /// <param name="level">Set the level of this log. TRACE = 0, DEBUG = 1, INFO = 2, WARNING = 3, ERROR = 4, CRITICAL = 5</param>
         /// <param name="obs">Provide any additional information you deem necessary (optional)</param>
         /// <returns>Returns true if the log was written successfully; otherwise, returns false</returns>
-        public static bool Write(string message, int indLevel, string obs)
+        public static bool Write(string message, object level, string obs)
         {
+            int indLevel;
+
+            if (level is int) { indLevel = (int)level; }
+            else if (level is Level) { indLevel = (int)(Level)level; }
+            else { throw new ArgumentException("Invalid level parameter.", nameof(level)); }
+
             if (indLevel < 0)
                 throw new Exception($"Log message level ({indLevel}) is invalid!");
 
             if (indLevel >= LogLevel) // If the level of the message to be written is acceptable
             {
-                if(!_firstChecked) { Check(LogValidity); } // TODO: change to when to boot
+                if (!_firstChecked) { Check(LogValidity); } // TODO: change to when to boot
 
                 string callingMethod = GetCallingMethodName(2, LevelStack); // Get the name of the method that called the WriteLog method
                 Task<bool> task = Task.Run(() => WriteLogToFile(message, ((Level)indLevel).ToString(), callingMethod, obs));
@@ -204,19 +208,6 @@ namespace LH
             }
 
             return true;
-        }
-
-
-        /// <summary>
-        /// Write a message to the log file.
-        /// </summary>
-        /// <param name="message">Message to be logged</param>
-        /// <param name="level">Set the level of this log. TRACE = 0, DEBUG = 1, INFO = 2, WARNING = 3, ERROR = 4, CRITICAL = 5</param>
-        /// <param name="obs">Provide any additional information you deem necessary (optional)</param>
-        /// <returns>Returns true if the log was written successfully; otherwise, returns false</returns>
-        public static bool Write(string message, Level level, string obs)
-        {
-           return Write(message, (int)level, obs);
         }
 
 
