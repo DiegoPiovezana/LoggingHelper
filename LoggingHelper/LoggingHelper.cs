@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -32,25 +33,40 @@ namespace LH
 
 
         /// <summary>
-        /// Dictionary of log levels.
-        /// TRACE - Used only for tracing the code and trying to find a specific part of a function.
-        /// DEBUG - Information useful for diagnosis.
-        /// INFO - Information generally useful for logging (start/stop of a service, configuration assumptions, etc.). Information I want to have available, but don't typically care about under normal circumstances.
-        /// WARNING - Anything that may cause strange behavior in the application, but for which I am automatically recovering.
-        /// ERROR - Any error that is fatal to the operation but not the service or application (cannot open a needed file, missing data, etc.). These errors will force user (administrator or direct user) intervention. They are usually reserved for incorrect connection strings, missing services, etc.
-        /// CRITICAL - Any error that is forcing a shutdown of the service or application to prevent further data loss (or further significant data loss). Typically used only for the most heinous errors and situations where there is guaranteed to have been an error that has caused some data corruption or loss.
+        /// Log levels.
         /// </summary>
-        public static IDictionary<int, string> Levels = new Dictionary<int, string>
+        public enum Level
         {
-            { 0, "TRACE" },
-            { 1, "DEBUG" },
-            { 2, "INFO" },
-            { 3, "WARNING" },
-            { 4, "ERROR" },
-            { 5, "CRITICAL" }
-        };
+            /// <summary>
+            /// Used only for tracing the code and trying to find a specific part of a function.
+            /// </summary>
+            TRACE,
 
+            /// <summary>
+            /// Information useful for diagnosis.
+            /// </summary>
+            DEBUG,
 
+            /// <summary>
+            /// Information generally useful for logging (start/stop of a service, configuration assumptions, etc.). Information I want to have available, but don't typically care about under normal circumstances.
+            /// </summary>
+            INFO,
+
+            /// <summary>
+            /// Anything that may cause strange behavior in the application, but for which I am automatically recovering.
+            /// </summary>
+            WARNING,
+
+            /// <summary>
+            /// Any error that is fatal to the operation but not the service or application (cannot open a needed file, missing data, etc.). These errors will force user (administrator or direct user) intervention. They are usually reserved for incorrect connection strings, missing services, etc.
+            /// </summary>
+            ERROR,
+
+            /// <summary>
+            /// Any error that is forcing a shutdown of the service or application to prevent further data loss (or further significant data loss). Typically used only for the most heinous errors and situations where there is guaranteed to have been an error that has caused some data corruption or loss.
+            /// </summary>
+            CRITICAL
+        }
 
 
 
@@ -163,25 +179,15 @@ namespace LH
             if (indLevel >= LogLevel) // If the level of the message to be written is acceptable
             {
                 string callingMethod = GetCallingMethodName(2, LevelStack); // Get the name of the method that called the WriteLog method
-                string messageLevel = "NOTSET";
-
-                if (Levels.ContainsKey(indLevel)) // If the level is registered
-                    messageLevel = Levels[indLevel];
-
-                if (indLevel >= LogLevel)
-                {
-                    Task<bool> task = Task.Run(() => WriteLogToFile(message, messageLevel, callingMethod, obs));
-                    if (task.Wait(TimeSpan.FromSeconds(5))) // Wait for log writing for a maximum of 5 seconds
-                        return task.Result;
-                    else
-                        return false; // If the time has expired, do not write
-                }
+                Task<bool> task = Task.Run(() => WriteLogToFile(message, ((Level)indLevel).ToString(), callingMethod, obs));
+                if (task.Wait(TimeSpan.FromSeconds(5))) // Wait for log writing for a maximum of 5 seconds
+                    return task.Result;
+                else
+                    return false; // If the time has expired, do not write
             }
 
             return true;
         }
-
-
 
 
     }
