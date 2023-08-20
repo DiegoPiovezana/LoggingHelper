@@ -13,23 +13,32 @@ namespace LH
     /// </summary>
     public static class LoggingHelper
     {
-        /// <summary>
-        /// Minimum level to be logged in the log file.
-        /// Example: If set to 2, TRACE and DEBUG logs will not be logged.
-        /// </summary>
-        public static int LogLevel { get; set; } = 0;
-
-        /// <summary>
-        /// Location where the log file will be stored.
-        /// (Specify a different location or filename to use different log files).
-        /// </summary>
-        public static string LogPath { get; set; } = ".\\LOG_LH\\Logging_general.log";
 
         /// <summary>
         /// Maximum hierarchical level to be logged in the method stack (final index). Example: 5
         /// </summary>
         public static int LevelStack { get; set; } = 4;
 
+
+        /// <summary>
+        /// Minimum level to be logged in the log file.
+        /// Example: If set to 2, TRACE and DEBUG logs will not be logged.
+        /// </summary>
+        public static int LogLevel { get; set; } = 0;
+
+
+        private static bool _firstChecked = false;
+        private static string _logPath = ".\\LOG_LH\\Logging_general.log";
+
+        /// <summary>
+        /// Location where the log file will be stored.
+        /// (Specify a different location or filename to use different log files).
+        /// </summary>
+        public static string LogPath
+        {
+            get => _logPath;
+            set { _logPath = value; Check(); }
+        }
 
 
         /// <summary>
@@ -79,13 +88,15 @@ namespace LH
         /// <param name="hidden">Specifies whether the directory should be hidden. Default is true.</param>
         public static void Check(int days = 3, bool hidden = true)
         {
+            _firstChecked = true;
+
             DirectoryInfo di = Directory.CreateDirectory(Path.GetDirectoryName(LogPath));
             if (hidden) di.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
 
             Write("Validating log...", 0, "CheckLog"); // To create a log file if it doesn't exist
 
             DateTime creationLog = File.GetCreationTime(LogPath);
-            if ((DateTime.Now - creationLog).TotalDays > days) DeleteLog();
+            if ((DateTime.Now - creationLog).TotalDays > days) DeleteLog();            
         }
 
         /// <summary>
@@ -178,6 +189,8 @@ namespace LH
 
             if (indLevel >= LogLevel) // If the level of the message to be written is acceptable
             {
+                if(!_firstChecked) { Check(); } // TODO: change to when to boot
+
                 string callingMethod = GetCallingMethodName(2, LevelStack); // Get the name of the method that called the WriteLog method
                 Task<bool> task = Task.Run(() => WriteLogToFile(message, ((Level)indLevel).ToString(), callingMethod, obs));
                 if (task.Wait(TimeSpan.FromSeconds(5))) // Wait for log writing for a maximum of 5 seconds
