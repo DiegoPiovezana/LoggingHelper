@@ -1,25 +1,33 @@
 ﻿[![NuGet](https://img.shields.io/nuget/v/LoggingHelper.svg)](https://www.nuget.org/packages/LoggingHelper/)
 
-<img src="https://raw.githubusercontent.com/stevenrskelton/flag-icon/master/png/16/country-4x3/br.png" width=2.0% height=2.0%> Veja a documentação em português em breve.<br/>
+<img src="https://raw.githubusercontent.com/stevenrskelton/flag-icon/master/png/16/country-4x3/br.png" width=2.0% height=2.0%> Veja a documentação em português [clicando aqui](LoggingHelper/Globalization/Readme_pt-br.md).<br/>
 
 # LoggingHelper
-Library for easy logging..<br/>
+Library for easy logging.<br/>
 
-<img src="LoggingHelper\Images\LoggingHelper_publish.png" width=100% height=100%> 
+<img src="LoggingHelper\Images\LoggingHelper_publish.png" width=100% height=100%><br/>
 
-✔ AVAILABLE FEATURES:<br/>
-- Allows logging with different levels of severity.
-- Use the _'Check'_ method to perform all validations before writing the log.
-- Use the _'Write'_ method to write logs to the file.
-- _'GetCallingMethodName'_ allows to identify who called considering stack level.
-- Old logs can be automatically deleted through the initial check method (_'Check'_).
-- Use the _'LevelStack'_ property to define the maximum level to be considered in the method stack.
-- The _'LogPath'_ property represents the location and file where the log should be recorded.
-- _'LogLevel'_ represents the minimum level of log to be recorded in the file.
-- More features coming soon.
+
+## AVAILABLE FEATURES:<br/>
+✔ Allows logging with different levels of severity;<br/>
+✔ Use the `Write` method to write logs to the file;<br/>
+✔ Use the `LevelStack` property to define the maximum level to be considered in the method stack;<br/>
+✔ The `LogValidity` property allows defining the maximum time (in days) for the log file to be reset;<br/>
+✔ `LogLevel` represents the minimum level of log to be recorded in the file;<br/>
+✔ The `LogPath` property define the location and file where the log should be recorded;<br/>
+✔ Use the `Check` method to perform all validations before writing the log;<br/>
+✔ `GetCallingMethodName` allows to identify who called considering stack level;<br/>
+✔ Old logs can be automatically deleted through the initial check method (`Check`);<br/>
+✔ More features coming soon.<br/>  
 
 <br/><br/>
 
+## INSTALLATION:
+```
+ dotnet add package LoggingHelper --version 1.1.0
+```
+
+<br/><br/>
 
 ## EXAMPLE OF USE
 ### Code:
