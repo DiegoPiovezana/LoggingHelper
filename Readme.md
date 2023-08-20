@@ -34,12 +34,11 @@ namespace App
         static void Main()
         {
             try
-            {
-                LoggingHelper.Check();
+            {                
                 LoggingHelper.Write("This is a trace log message.", 0, "Start application.");
                 LoggingHelper.Write("Debug message.", 1, null);
                 LoggingHelper.Write("This is a message for an information log.", 2, null);             
-                LoggingHelper.Write("This is a message for an information log.", LoggingHelper.Level.INFO, null); 
+                LoggingHelper.Write("This is also a message for an information log.", LoggingHelper.Level.INFO, null); 
             }
             catch (Exception ex)
             {
@@ -50,6 +49,13 @@ namespace App
 }
 
 ```
-### Result:
-<img src="LoggingHelper\Images\Example.png" width=100% height=100%> 
 
+
+### Result:
+```console
+20/08/2023 14:06:56 [TRACE] (/Main) This is a trace log message. | Start application.
+20/08/2023 14:06:56 [DEBUG] (/Main) Debug message.
+20/08/2023 14:06:56 [INFO] (/Main) This is a message for an information log.
+20/08/2023 14:06:56 [INFO] (/Main) This is also a message for an information log.
+20/08/2023 14:06:56 [ERROR] (/Main) This is a log message for logging errors! | Exception of type 'System.Exception' was thrown.
+```
