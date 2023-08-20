@@ -19,6 +19,10 @@ namespace LH
         /// </summary>
         public static int LevelStack { get; set; } = 4;
 
+        /// <summary>
+        /// The number of days after which the log file should be considered outdated and will be deleted. Default is 3 days.
+        /// </summary>
+        public static int LogValidity { get; set; } = 3;
 
         /// <summary>
         /// Minimum level to be logged in the log file.
@@ -37,7 +41,7 @@ namespace LH
         public static string LogPath
         {
             get => _logPath;
-            set { _logPath = value; Check(); }
+            set { _logPath = value; Check(LogValidity); }
         }
 
 
@@ -189,7 +193,7 @@ namespace LH
 
             if (indLevel >= LogLevel) // If the level of the message to be written is acceptable
             {
-                if(!_firstChecked) { Check(); } // TODO: change to when to boot
+                if(!_firstChecked) { Check(LogValidity); } // TODO: change to when to boot
 
                 string callingMethod = GetCallingMethodName(2, LevelStack); // Get the name of the method that called the WriteLog method
                 Task<bool> task = Task.Run(() => WriteLogToFile(message, ((Level)indLevel).ToString(), callingMethod, obs));
