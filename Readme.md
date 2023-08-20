@@ -38,7 +38,8 @@ namespace App
                 LoggingHelper.Check();
                 LoggingHelper.Write("This is a trace log message.", 0, "Start application.");
                 LoggingHelper.Write("Debug message.", 1, null);
-                LoggingHelper.Write("This is a message for an information log.", 2, null);                
+                LoggingHelper.Write("This is a message for an information log.", 2, null);             
+                LoggingHelper.Write("This is a message for an information log.", LoggingHelper.Level.INFO, null); 
             }
             catch (Exception ex)
             {
