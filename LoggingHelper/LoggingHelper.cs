@@ -148,7 +148,7 @@ namespace LH
         /// Write the log
         /// </summary>
         /// <param name="message">Message to be logged</param>
-        /// <param name="levelMessage">Level of the log message</param>
+        /// <param name="levelMessage">level of the log message</param>
         /// <param name="nameMethod">Name of the method that called the log</param>
         /// <param name="obs">Additional information (optional)</param>
         /// <returns>Returns true if the log was written successfully; otherwise, throws an exception</returns>
@@ -176,7 +176,7 @@ namespace LH
 
 
         /// <summary>
-        /// Write a message to the log file
+        /// Write a message to the log file.
         /// </summary>
         /// <param name="message">Message to be logged</param>
         /// <param name="indLevel">Set the level of this log. TRACE = 0, DEBUG = 1, INFO = 2, WARNING = 3, ERROR = 4, CRITICAL = 5</param>
@@ -200,6 +200,19 @@ namespace LH
             }
 
             return true;
+        }
+
+
+        /// <summary>
+        /// Write a message to the log file.
+        /// </summary>
+        /// <param name="message">Message to be logged</param>
+        /// <param name="level">Set the level of this log. TRACE = 0, DEBUG = 1, INFO = 2, WARNING = 3, ERROR = 4, CRITICAL = 5</param>
+        /// <param name="obs">Provide any additional information you deem necessary (optional)</param>
+        /// <returns>Returns true if the log was written successfully; otherwise, returns false</returns>
+        public static bool Write(string message, Level level, string obs)
+        {
+           return Write(message, (int)level, obs);
         }
 
 
