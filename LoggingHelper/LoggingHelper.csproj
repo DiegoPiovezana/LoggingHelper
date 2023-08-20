@@ -2,7 +2,7 @@
 
   <PropertyGroup>
      <TargetFrameworks>net452;netstandard2.0;netstandard2.1</TargetFrameworks>
-     <ApplicationIcon>LoggingHelper_icon.ico</ApplicationIcon>
+     <ApplicationIcon>Images\LoggingHelper_icon.ico</ApplicationIcon>
      <GenerateDocumentationFile>True</GenerateDocumentationFile>
      <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
      <Title>LoggingHelper</Title>
@@ -18,7 +18,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="LoggingHelper_icon.ico" />
+    <Content Include="Images\LoggingHelper_icon.ico" />
   </ItemGroup>
 
   <ItemGroup>
