@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
+using System.Text;
 
-namespace LoggingHelper
+namespace LH
 {
     internal class WriteLog
     {
@@ -10,7 +12,7 @@ namespace LoggingHelper
         restart:
             try
             {
-                using (StreamWriter writer = new StreamWriter(logPath, true))
+                using (StreamWriter writer = new StreamWriter(logPath, true, Encoding.UTF8))
                 {
                     writer.Write($"{DateTime.Now} [{levelMessage}] ({nameMethod}) {message.Replace("\n", "").Replace("\r", "")}");
 
@@ -39,31 +41,41 @@ namespace LoggingHelper
 
                 switch (levelMessage)
                 {
-                    case nameof(LH.LoggingHelper.Level.TRACE):
-                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                    case nameof(LoggingHelper.Level.TRACE):
+                        //Console.ForegroundColor = ConsoleColor.DarkGray;
+                        Trace.WriteLine(output);
                         break;
-                    case nameof(LH.LoggingHelper.Level.DEBUG):
-                        Console.ForegroundColor = ConsoleColor.Gray;
+                    case nameof(LoggingHelper.Level.DEBUG):
+                        //Console.ForegroundColor = ConsoleColor.Gray;
+                        Trace.WriteLine(output);
+                        //Debug.WriteLine(output);
                         break;
-                    case nameof(LH.LoggingHelper.Level.INFO):
-                        Console.ForegroundColor = ConsoleColor.White;
+                    case nameof(LoggingHelper.Level.INFO):
+                        //Console.ForegroundColor = ConsoleColor.White;
+                        Trace.WriteLine(output);
                         break;
-                    case nameof(LH.LoggingHelper.Level.WARNING):
-                        Console.ForegroundColor = ConsoleColor.Yellow;
+                    case nameof(LoggingHelper.Level.WARNING):
+                        //Console.ForegroundColor = ConsoleColor.Yellow;
+                        Trace.WriteLine(output);
                         break;
-                    case nameof(LH.LoggingHelper.Level.ERROR):
-                        Console.ForegroundColor = ConsoleColor.Red;
+                    case nameof(LoggingHelper.Level.ERROR):
+                        //Console.ForegroundColor = ConsoleColor.Red;
+                        Trace.WriteLine(output);
+                        //Console.Error.WriteLine(output);
                         break;
-                    case nameof(LH.LoggingHelper.Level.CRITICAL):
-                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                    case nameof(LoggingHelper.Level.CRITICAL):
+                        //Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Trace.WriteLine(output);
+                        //Console.Error.WriteLine(output);
                         break;
                     default:
-                        Console.ForegroundColor = ConsoleColor.White;
+                        //Console.ForegroundColor = ConsoleColor.White;
+                        Trace.WriteLine(output);
                         break;
                 }
 
-                Console.WriteLine(output);
-                Console.ResetColor();
+                //Debug.WriteLine(output);
+                //Console.ResetColor();
                 return true;
             }
             catch

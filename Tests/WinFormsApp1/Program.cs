@@ -15,11 +15,11 @@ namespace WinFormsApp1
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new Form1());
+            Application.Run(new FormTest());
 
             //Log.Check();
-            Log.Write("Teste!", 2, null);
-            LoggingHelper.Write("Teste de log com enum e obs.", LoggingHelper.Level.INFO, "Teste");
+            //Log.Write("Teste!", 2, null);
+            //Log.Write("Teste de log com enum e obs.", Log.Level.INFO, "Teste");
 
         }
     }

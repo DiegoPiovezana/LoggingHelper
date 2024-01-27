@@ -1,4 +1,4 @@
-using LoggingHelper = LH.LoggingHelper;
+using LH;
 
 namespace TestLoggingHelper
 {
@@ -16,7 +16,7 @@ namespace TestLoggingHelper
         }
 
         [Test]
-        public void CodigoExemploReadme()
+        public void CodeExampleReadme()
         {
             try
             {
@@ -41,7 +41,7 @@ namespace TestLoggingHelper
             //LoggingHelper.Check();
             //LoggingHelper.Write("This is a trace log message.", 0, "Start application.");
 
-            LoggingHelper.LogPath = ".\\LOG_TEST2\\Test.log";
+            LoggingHelper.LogPathFile = ".\\LOG_TEST2\\Test.log";
 
             LoggingHelper.Write("This is level 0.", LoggingHelper.Level.TRACE, "Teste 2.1");
             LoggingHelper.Write("This is level 5.", (LoggingHelper.Level)5, "Teste 2.2");
@@ -51,11 +51,11 @@ namespace TestLoggingHelper
         [TestFixture]
         public class TestsWrites
         {
-            [Test, TestCaseSource(typeof(CasosDeTeste), nameof(CasosDeTeste.Tests))]
-            public bool ValidarEscritas(string message, int indLevel, string obs) => LH.LoggingHelper.Write(message, indLevel, obs);
+            [Test, TestCaseSource(typeof(TestCases), nameof(TestCases.Tests))]
+            public bool CheckWrites(string message, int indLevel, string obs) => LH.LoggingHelper.Write(message, indLevel, obs);
         }
 
-        public class CasosDeTeste
+        public class TestCases
         {
             public static List<TestCaseData> Tests
             {

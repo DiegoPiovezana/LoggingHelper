@@ -1,5 +1,4 @@
-﻿using LoggingHelper;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -105,7 +104,7 @@ namespace LH
 
             DirectoryInfo di = Directory.CreateDirectory(Path.GetDirectoryName(LogPathFile));
             if (hidden) di.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
-            else di.Attributes = FileAttributes.Directory & ~FileAttributes.Hidden;           
+            else di.Attributes = FileAttributes.Directory & ~FileAttributes.Hidden;
 
             if (File.Exists(LogPathFile))
             {
@@ -178,13 +177,18 @@ namespace LH
 
             string callingMethod = GetCallingMethodName(2, LevelStack);
 
-            if (indLevelMessage >= LogLevelConsole)
+            if (LogLevelConsole >= 0 && indLevelMessage >= LogLevelConsole)
             {
-                if (!_firstChecked) { Console.WriteLine($"  ### LoggingHelper - v{Environment.Version} ###"); }
+                if (!_firstChecked)
+                {
+                    Console.OutputEncoding = Encoding.UTF8;
+                    Console.WriteLine($"  ### LoggingHelper - v{Environment.Version} ###");
+                }
+
                 WriteLog.ToConsole(message, ((Level)indLevelMessage).ToString(), callingMethod, obs);
             }
 
-            if (indLevelMessage >= LogLevelFile) 
+            if (LogLevelFile >= 0 && indLevelMessage >= LogLevelFile)
             {
                 if (!_firstChecked) { CheckFile(LogValidity); } // TODO: change to when to boot                
 
