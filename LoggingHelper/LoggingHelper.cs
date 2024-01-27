@@ -37,8 +37,6 @@ namespace LH
         public static int LogLevelConsole { get; set; } = -1;
 
 
-
-
         private static bool _firstChecked = false;
         private static string _logPath = ".\\LOG_LH\\Logging_general.log";
 
@@ -51,6 +49,11 @@ namespace LH
             get => _logPath;
             set { _logPath = value; CheckFile(LogValidity); }
         }
+
+        /// <summary>
+        /// The format of the log message.
+        /// </summary>
+        public static string FormatLogOutput { get; set; } = "<dd/MM/yyyy HH:mm:ss.fff> [<level>] (<stack>) <message> | <obs>"; // "{0} [{1}] ({2}) {3}{4}"
 
 
         /// <summary>
@@ -178,13 +181,7 @@ namespace LH
             string callingMethod = GetCallingMethodName(2, LevelStack);
 
             if (LogLevelConsole >= 0 && indLevelMessage >= LogLevelConsole)
-            {
-                if (!_firstChecked)
-                {
-                    Console.OutputEncoding = Encoding.UTF8;
-                    Console.WriteLine($"  ### LoggingHelper - v{Environment.Version} ###");
-                }
-
+            {                
                 WriteLog.ToConsole(message, ((Level)indLevelMessage).ToString(), callingMethod, obs);
             }
 

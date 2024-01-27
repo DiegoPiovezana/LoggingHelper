@@ -13,13 +13,15 @@ namespace WinFormsApp1
 
         public void DefineFieldsDefaultValues()
         {
-            LogPathFileTxb.Text = ".\\LOG_TEST\\Logging_general.log";
-
             LevelStackNud.Minimum = 0;
-            LevelStackNud.Value = 4;
+            LevelStackNud.Value = 2;
 
             LogValidityNud.Minimum = 0;
-            LogValidityNud.Value = 3;
+            LogValidityNud.Value = 1;
+
+            FormatLogOutputTxb.Text = "<dd/MM/yyyy HH:mm:ss.fff> [<level>] (<stack>) <message> | <obs>";
+
+            LogPathFileTxb.Text = ".\\LOG_TEST\\Logging_general.log";
 
             LogLevelFileNud.Maximum = Enum.GetValues(typeof(LoggingHelper.Level)).Length - 1;
             LogLevelFileNud.Minimum = -1;
@@ -27,7 +29,7 @@ namespace WinFormsApp1
 
             LogLevelConsoleNud.Maximum = Enum.GetValues(typeof(LoggingHelper.Level)).Length - 1;
             LogLevelConsoleNud.Minimum = -1;
-            LogLevelConsoleNud.Value = -1;
+            LogLevelConsoleNud.Value = 0;
 
             MessageTxb.Text = "This is a log message.";
         }
@@ -72,7 +74,8 @@ namespace WinFormsApp1
         {
             LoggingHelper.LogValidity = (int)LogValidityNud.Value;
             LoggingHelper.LevelStack = (int)LevelStackNud.Value;
-            LoggingHelper.LogPathFile = LogPathFileTxb.Text ?? ".\\LOG_TEST\\Logging_general.log";
+            LoggingHelper.FormatLogOutput = FormatLogOutputTxb.Text;
+            LoggingHelper.LogPathFile = LogPathFileTxb.Text;
             LoggingHelper.LogLevelFile = (int)LogLevelFileNud.Value;
             LoggingHelper.LogLevelConsole = (int)LogLevelConsoleNud.Value;
         }
@@ -89,17 +92,23 @@ namespace WinFormsApp1
 
         private void LogPathFileTxb_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            var folder = LogPathFileFbd.ShowDialog();
-            if(folder == DialogResult.OK)
-            {
-                LogPathFileTxb.Text = LogPathFileFbd.SelectedPath + "\\Logging_general.log";
-            }
+            if (LogPathFileFbd.ShowDialog() == DialogResult.OK) { LogPathFileTxb.Text = LogPathFileFbd.SelectedPath + "\\LoggingLH_Test.log"; }
         }
 
         private void LogPathFileTxb_TextChanged(object sender, EventArgs e)
         {
-            LoggingHelper.LogPathFile = LogPathFileTxb.Text ?? ".\\LOG_TEST\\Logging_general.log";
+            LoggingHelper.LogPathFile = LogPathFileTxb.Text.Trim();
         }
+
+        private void FormatLogOutputTxb_DoubleClick(object sender, EventArgs e)
+        {
+            FormatLogOutputTxb.Text = "<dd/MM/yyyy HH:mm:ss.fff> [<level>] (<stack>) <message> | <obs>";
+        }
+
+        private void FormatLogOutputTxb_TextChanged(object sender, EventArgs e)
+        {
+            LoggingHelper.FormatLogOutput = FormatLogOutputTxb.Text.Trim();
+        }           
 
         private void LogLevelFileNud_ValueChanged(object sender, EventArgs e)
         {

@@ -43,6 +43,8 @@
             PanelConfigLib = new Panel();
             LogValidityNud = new NumericUpDown();
             LevelStackNud = new NumericUpDown();
+            FormatLogOutputTxb = new TextBox();
+            FormatLogOutputLbl = new Label();
             PanelConfigConsole = new Panel();
             LogLevelConsoleNud = new NumericUpDown();
             ErrorBtn = new Button();
@@ -136,7 +138,7 @@
             LogValidityLbl.AutoSize = true;
             LogValidityLbl.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             LogValidityLbl.ForeColor = Color.White;
-            LogValidityLbl.Location = new Point(24, 60);
+            LogValidityLbl.Location = new Point(182, 32);
             LogValidityLbl.Name = "LogValidityLbl";
             LogValidityLbl.Size = new Size(87, 20);
             LogValidityLbl.TabIndex = 3;
@@ -160,7 +162,7 @@
             LevelStackLbl.AutoSize = true;
             LevelStackLbl.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             LevelStackLbl.ForeColor = Color.White;
-            LevelStackLbl.Location = new Point(24, 99);
+            LevelStackLbl.Location = new Point(33, 32);
             LevelStackLbl.Name = "LevelStackLbl";
             LevelStackLbl.Size = new Size(82, 20);
             LevelStackLbl.TabIndex = 3;
@@ -203,7 +205,9 @@
             PanelConfigLib.BackColor = Color.FromArgb(116, 166, 0);
             PanelConfigLib.Controls.Add(LogValidityNud);
             PanelConfigLib.Controls.Add(LevelStackNud);
+            PanelConfigLib.Controls.Add(FormatLogOutputTxb);
             PanelConfigLib.Controls.Add(LogValidityLbl);
+            PanelConfigLib.Controls.Add(FormatLogOutputLbl);
             PanelConfigLib.Controls.Add(LevelStackLbl);
             PanelConfigLib.Location = new Point(12, 12);
             PanelConfigLib.Name = "PanelConfigLib";
@@ -212,19 +216,41 @@
             // 
             // LogValidityNud
             // 
-            LogValidityNud.Location = new Point(129, 58);
+            LogValidityNud.Location = new Point(182, 55);
             LogValidityNud.Name = "LogValidityNud";
-            LogValidityNud.Size = new Size(150, 27);
+            LogValidityNud.Size = new Size(106, 27);
             LogValidityNud.TabIndex = 6;
             LogValidityNud.ValueChanged += LogValidityNud_ValueChanged;
             // 
             // LevelStackNud
             // 
-            LevelStackNud.Location = new Point(129, 99);
+            LevelStackNud.Location = new Point(33, 55);
             LevelStackNud.Name = "LevelStackNud";
-            LevelStackNud.Size = new Size(150, 27);
+            LevelStackNud.Size = new Size(106, 27);
             LevelStackNud.TabIndex = 6;
             LevelStackNud.ValueChanged += LevelStackNud_ValueChanged;
+            // 
+            // FormatLogOutputTxb
+            // 
+            FormatLogOutputTxb.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            FormatLogOutputTxb.Location = new Point(33, 128);
+            FormatLogOutputTxb.Name = "FormatLogOutputTxb";
+            FormatLogOutputTxb.Size = new Size(255, 27);
+            FormatLogOutputTxb.TabIndex = 4;
+            FormatLogOutputTxb.TextChanged += FormatLogOutputTxb_TextChanged;
+            FormatLogOutputTxb.DoubleClick += FormatLogOutputTxb_DoubleClick;
+            // 
+            // FormatLogOutputLbl
+            // 
+            FormatLogOutputLbl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            FormatLogOutputLbl.AutoSize = true;
+            FormatLogOutputLbl.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            FormatLogOutputLbl.ForeColor = Color.White;
+            FormatLogOutputLbl.Location = new Point(33, 102);
+            FormatLogOutputLbl.Name = "FormatLogOutputLbl";
+            FormatLogOutputLbl.Size = new Size(136, 20);
+            FormatLogOutputLbl.TabIndex = 3;
+            FormatLogOutputLbl.Text = "FormatLogOutput";
             // 
             // PanelConfigConsole
             // 
@@ -447,5 +473,7 @@
         private NumericUpDown LogLevelFileNud;
         private NumericUpDown LogLevelConsoleNud;
         private FolderBrowserDialog LogPathFileFbd;
+        private TextBox FormatLogOutputTxb;
+        private Label FormatLogOutputLbl;
     }
 }

@@ -19,7 +19,7 @@ Possible to set the validity (in days) for resetting the log file.</PackageRelea
      <PackageLicenseFile>License.txt</PackageLicenseFile>
      <AssemblyVersion>1.1.0</AssemblyVersion>
      <FileVersion>1.1.0</FileVersion>
-     <Version>1.1.0</Version>
+     <Version>1.2.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
