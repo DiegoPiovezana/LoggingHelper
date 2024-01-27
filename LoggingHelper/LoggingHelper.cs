@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LoggingHelper;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -24,9 +25,19 @@ namespace LH
 
         /// <summary>
         /// Minimum level to be logged in the log file.
-        /// Example: If set to 2, TRACE and DEBUG logs will not be logged.
+        /// <para>Example: If set to 2, TRACE and DEBUG logs will not be logged.</para>
+        /// <para>Enter a negative number to avoid recording logs.</para>
         /// </summary>
-        public static int LogLevel { get; set; } = 0;
+        public static int LogLevelFile { get; set; } = 0;
+
+        /// <summary>
+        /// Minimum level to be logged in the log console.
+        /// <para>Example: If set to 2, TRACE and DEBUG logs will not be logged.</para>
+        /// <para>Enter a negative number to avoid recording logs.</para>
+        /// </summary>
+        public static int LogLevelConsole { get; set; } = -1;
+
+
 
 
         private static bool _firstChecked = false;
@@ -36,10 +47,10 @@ namespace LH
         /// Location where the log file will be stored.
         /// (Specify a different location or filename to use different log files).
         /// </summary>
-        public static string LogPath
+        public static string LogPathFile
         {
             get => _logPath;
-            set { _logPath = value; Check(LogValidity); }
+            set { _logPath = value; CheckFile(LogValidity); }
         }
 
 
@@ -88,17 +99,18 @@ namespace LH
         /// </summary>
         /// <param name="days">The number of days after which the log file should be considered outdated. Default is 3 days.</param>
         /// <param name="hidden">Specifies whether the directory should be hidden. Default is true.</param>
-        public static void Check(int days = 3, bool hidden = true)
+        public static void CheckFile(int days = 3, bool hidden = true)
         {
             _firstChecked = true;
 
-            DirectoryInfo di = Directory.CreateDirectory(Path.GetDirectoryName(LogPath));
+            DirectoryInfo di = Directory.CreateDirectory(Path.GetDirectoryName(LogPathFile));
             if (hidden) di.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
+            else di.Attributes = FileAttributes.Directory & ~FileAttributes.Hidden;           
 
-            if (File.Exists(LogPath))
+            if (File.Exists(LogPathFile))
             {
-                DateTime creationLog = File.GetCreationTime(LogPath);
-                if ((DateTime.Now - creationLog).TotalDays > days) DeleteLog();
+                DateTime creationLog = File.GetCreationTime(LogPathFile);
+                if ((DateTime.Now - creationLog).TotalDays > days) DeleteLogFile();
             }
         }
 
@@ -106,13 +118,13 @@ namespace LH
         /// Deletes the log file defined in the LogPath attribute.
         /// </summary>
         /// <returns>True if the file was successfully deleted, otherwise false.</returns>
-        public static bool DeleteLog()
+        public static bool DeleteLogFile()
         {
-            if (File.Exists(LogPath))
+            if (File.Exists(LogPathFile))
             {
                 try
                 {
-                    File.Delete(LogPath);
+                    File.Delete(LogPathFile);
                     return true;
                 }
                 catch (Exception)
@@ -127,11 +139,11 @@ namespace LH
 
 
         /// <summary>
-        /// Identifies the name of the calling method.
+        /// Identifies the name of the calling method (stack).
         /// </summary>
         /// <param name="indStack">Initial index for the call stack. E.g., if 2, it analyzes from the antepenultimate call.</param>
         /// <param name="levelPath">Maximum hierarchical level to be recorded in the method path (end index). E.g., 5.</param>
-        /// <returns>The name of the calling method.</returns>
+        /// <returns>The name of the calling method (stack).</returns>
         public static string GetCallingMethodName(int indStack, int levelPath)
         {
             StackFrame frame = new StackFrame(indStack);
@@ -148,36 +160,6 @@ namespace LH
         }
 
         /// <summary>
-        /// Write the log
-        /// </summary>
-        /// <param name="message">Message to be logged</param>
-        /// <param name="levelMessage">level of the log message</param>
-        /// <param name="nameMethod">Name of the method that called the log</param>
-        /// <param name="obs">Additional information (optional)</param>
-        /// <returns>Returns true if the log was written successfully; otherwise, throws an exception</returns>
-        private static bool WriteLogToFile(string message, string levelMessage, string nameMethod, string obs)
-        {
-        restart:
-            try
-            {
-                using (StreamWriter writer = new StreamWriter(LogPath, true))
-                {
-                    writer.Write($"{DateTime.Now} [{levelMessage}] ({nameMethod}) {message.Replace("\n", "").Replace("\r", "")}");
-
-                    if (!string.IsNullOrEmpty(obs)) // If there is additional information
-                        writer.Write($" | {obs.Replace("\n", "").Replace("\r", "")}");
-
-                    writer.WriteLine(); // Space between messages
-                    return true;
-                }
-            }
-            catch (IOException ex) when (ex.HResult == -2147024864) // If the log file is in use, try again
-            {
-                goto restart;
-            }
-        }
-
-        /// <summary>
         /// Write a message to the log file.
         /// </summary>
         /// <param name="message">Message to be logged</param>
@@ -186,25 +168,31 @@ namespace LH
         /// <returns>Returns true if the log was written successfully; otherwise, returns false</returns>
         public static bool Write(string message, object level, string obs)
         {
-            int indLevel;
+            int indLevelMessage;
 
-            if (level is int) { indLevel = (int)level; }
-            else if (level is Level) { indLevel = (int)(Level)level; }
+            if (level is int levelInt) { indLevelMessage = levelInt; }
+            else if (level is Level levelEnum) { indLevelMessage = (int)levelEnum; }
             else { throw new ArgumentException("Invalid level parameter.", nameof(level)); }
 
-            if (indLevel < 0)
-                throw new Exception($"Log message level ({indLevel}) is invalid!");
+            if (indLevelMessage < 0) throw new ArgumentException($"E-00001-LH: Log message level ({indLevelMessage}) is invalid!");
 
-            if (indLevel >= LogLevel) // If the level of the message to be written is acceptable
+            string callingMethod = GetCallingMethodName(2, LevelStack);
+
+            if (indLevelMessage >= LogLevelConsole)
             {
-                if (!_firstChecked) { Check(LogValidity); } // TODO: change to when to boot
+                if (!_firstChecked) { Console.WriteLine($"  ### LoggingHelper - v{Environment.Version} ###"); }
+                WriteLog.ToConsole(message, ((Level)indLevelMessage).ToString(), callingMethod, obs);
+            }
 
-                string callingMethod = GetCallingMethodName(2, LevelStack); // Get the name of the method that called the WriteLog method
-                Task<bool> task = Task.Run(() => WriteLogToFile(message, ((Level)indLevel).ToString(), callingMethod, obs));
-                if (task.Wait(TimeSpan.FromSeconds(5))) // Wait for log writing for a maximum of 5 seconds
-                    return task.Result;
-                else
-                    return false; // If the time has expired, do not write
+            if (indLevelMessage >= LogLevelFile) 
+            {
+                if (!_firstChecked) { CheckFile(LogValidity); } // TODO: change to when to boot                
+
+                Task<bool> task = Task.Run(() => WriteLog.ToFile(LogPathFile, message, ((Level)indLevelMessage).ToString(), callingMethod, obs));
+
+                // Wait for log writing for a maximum of 5 seconds
+                if (task.Wait(TimeSpan.FromSeconds(5))) return task.Result;
+                else return false; // If the time has expired, do not write
             }
 
             return true;
