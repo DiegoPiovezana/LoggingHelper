@@ -27,7 +27,7 @@ Possible to set the validity (in days) for resetting the log file.</PackageRelea
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\Design\LoggingHelper_icon.png">
+    <None Include="..\..\Design\LoggingHelper_icon.png" Link="Images\LoggingHelper_icon.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
