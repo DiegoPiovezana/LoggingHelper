@@ -54,6 +54,7 @@
             RandomBtn = new Button();
             CriticalBtn = new Button();
             PanelButtons = new Panel();
+            LevelTxb = new TextBox();
             PanelInput = new Panel();
             MessageLbl = new Label();
             ObservationLbl = new Label();
@@ -318,9 +319,9 @@
             // RandomBtn
             // 
             RandomBtn.Anchor = AnchorStyles.None;
-            RandomBtn.Location = new Point(15, 37);
+            RandomBtn.Location = new Point(15, 25);
             RandomBtn.Name = "RandomBtn";
-            RandomBtn.Size = new Size(100, 50);
+            RandomBtn.Size = new Size(100, 28);
             RandomBtn.TabIndex = 2;
             RandomBtn.Text = "RANDOM";
             RandomBtn.UseVisualStyleBackColor = true;
@@ -343,6 +344,7 @@
             PanelButtons.BackColor = Color.FromArgb(116, 166, 0);
             PanelButtons.Controls.Add(DebugBtn);
             PanelButtons.Controls.Add(TraceBtn);
+            PanelButtons.Controls.Add(LevelTxb);
             PanelButtons.Controls.Add(ErrorBtn);
             PanelButtons.Controls.Add(CriticalBtn);
             PanelButtons.Controls.Add(RandomBtn);
@@ -352,6 +354,16 @@
             PanelButtons.Name = "PanelButtons";
             PanelButtons.Size = new Size(441, 119);
             PanelButtons.TabIndex = 5;
+            // 
+            // LevelTxb
+            // 
+            LevelTxb.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            LevelTxb.Location = new Point(15, 73);
+            LevelTxb.Name = "LevelTxb";
+            LevelTxb.Size = new Size(102, 27);
+            LevelTxb.TabIndex = 4;
+            LevelTxb.TextAlign = HorizontalAlignment.Center;
+            LevelTxb.DoubleClick += LevelTxb_DoubleClick;
             // 
             // PanelInput
             // 
@@ -436,6 +448,7 @@
             PanelConfigConsole.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)LogLevelConsoleNud).EndInit();
             PanelButtons.ResumeLayout(false);
+            PanelButtons.PerformLayout();
             PanelInput.ResumeLayout(false);
             PanelInput.PerformLayout();
             ResumeLayout(false);
@@ -475,5 +488,6 @@
         private FolderBrowserDialog LogPathFileFbd;
         private TextBox FormatLogOutputTxb;
         private Label FormatLogOutputLbl;
+        private TextBox LevelTxb;
     }
 }

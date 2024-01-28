@@ -174,6 +174,7 @@ namespace LH
 
             if (level is int levelInt) { indLevelMessage = levelInt; }
             else if (level is Level levelEnum) { indLevelMessage = (int)levelEnum; }
+            else if (level is string levelStr) { indLevelMessage = (int)Enum.Parse(typeof(Level), levelStr.Replace("\"","")); }
             else { throw new ArgumentException("Invalid level parameter.", nameof(level)); }
 
             if (indLevelMessage < 0) throw new ArgumentException($"E-00001-LH: Log message level ({indLevelMessage}) is invalid!");

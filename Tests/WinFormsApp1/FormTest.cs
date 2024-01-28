@@ -36,38 +36,50 @@ namespace WinFormsApp1
 
         private void TraceBtn_Click(object sender, EventArgs e)
         {
+            LevelTxb.Text = ((int)LoggingHelper.Level.TRACE).ToString();
             LoggingHelper.Write(MessageTxb.Text, LoggingHelper.Level.TRACE, ObservationTxb.Text);
         }
 
         private void DebugBtn_Click(object sender, EventArgs e)
         {
+            LevelTxb.Text = ((int)LoggingHelper.Level.DEBUG).ToString();
             LoggingHelper.Write(MessageTxb.Text, LoggingHelper.Level.DEBUG, ObservationTxb.Text);
         }
 
         private void InfoBtn_Click(object sender, EventArgs e)
         {
+            LevelTxb.Text = ((int)LoggingHelper.Level.INFO).ToString();
             LoggingHelper.Write(MessageTxb.Text, LoggingHelper.Level.INFO, ObservationTxb.Text);
         }
 
         private void WarningBtn_Click(object sender, EventArgs e)
         {
+            LevelTxb.Text = ((int)LoggingHelper.Level.WARNING).ToString();
             LoggingHelper.Write(MessageTxb.Text, LoggingHelper.Level.WARNING, ObservationTxb.Text);
         }
 
         private void ErrorBtn_Click(object sender, EventArgs e)
         {
+            LevelTxb.Text = ((int)LoggingHelper.Level.ERROR).ToString();
             LoggingHelper.Write(MessageTxb.Text, LoggingHelper.Level.ERROR, ObservationTxb.Text);
         }
 
         private void CriticalBtn_Click(object sender, EventArgs e)
         {
+            LevelTxb.Text = ((int)LoggingHelper.Level.CRITICAL).ToString();
             LoggingHelper.Write(MessageTxb.Text, LoggingHelper.Level.CRITICAL, ObservationTxb.Text);
         }
 
         private void RandomBtn_Click(object sender, EventArgs e)
         {
             int randomIndex = new Random().Next(Enum.GetValues(typeof(LoggingHelper.Level)).Length);
+            LevelTxb.Text = randomIndex.ToString();
             LoggingHelper.Write(MessageTxb.Text, randomIndex, ObservationTxb.Text);
+        }
+
+        private void LevelTxb_DoubleClick(object sender, EventArgs e)
+        {
+            LoggingHelper.Write(MessageTxb.Text, LevelTxb.Text, ObservationTxb.Text);
         }
 
         public void DefineSettings()
@@ -108,7 +120,7 @@ namespace WinFormsApp1
         private void FormatLogOutputTxb_TextChanged(object sender, EventArgs e)
         {
             LoggingHelper.FormatLogOutput = FormatLogOutputTxb.Text.Trim();
-        }           
+        }
 
         private void LogLevelFileNud_ValueChanged(object sender, EventArgs e)
         {
