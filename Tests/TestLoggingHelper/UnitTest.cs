@@ -10,7 +10,7 @@ namespace TestLoggingHelper
         }
 
         [Test]
-        public void Test()
+        public void TestPass()
         {
             Assert.Pass();
         }
@@ -23,8 +23,10 @@ namespace TestLoggingHelper
                 //LoggingHelper.Check();
                 LoggingHelper.Write("This is a trace log message.", 0, "Start application.");
                 LoggingHelper.Write("Debug message.", 1, null);
-                LoggingHelper.Write("This is a message for an information log.", 2, null);
-                LoggingHelper.Write("This is also a message for an information log.", LoggingHelper.Level.INFO, null);
+                LoggingHelper.Write("This is a message for an information log [2].", 2, null);
+                LoggingHelper.Write("This is also a message for an information log [3].", LoggingHelper.Level.INFO, null);
+                LoggingHelper.Write("This is also a message for an information log [4].", "INFO", null);
+                LoggingHelper.Write("This is also a message for an information log [5].", "2", null);
 
                 throw new Exception();
             }
@@ -35,17 +37,104 @@ namespace TestLoggingHelper
         }
 
         [Test]
-        public void Test2()
+        public void TestSimple()
         {           
             //LoggingHelper.LogPath = ".\\LOG_TEST\\Logging_general.log";
             //LoggingHelper.Check();
             //LoggingHelper.Write("This is a trace log message.", 0, "Start application.");
 
-            LoggingHelper.LogPathFile = ".\\LOG_TEST2\\Test.log";
+            LoggingHelper.LogPathFile = ".\\LOG_TEST\\Test.log";
 
             LoggingHelper.Write("This is level 0.", LoggingHelper.Level.TRACE, "Teste 2.1");
             LoggingHelper.Write("This is level 5.", (LoggingHelper.Level)5, "Teste 2.2");
             LoggingHelper.Write("This is level 1.", (int)LoggingHelper.Level.DEBUG, "Teste 2.3");
+        }        
+
+        [Test]
+        public void TestNullMessage()
+        {
+            LoggingHelper.LogPathFile = ".\\LOG_TEST\\Test.log";
+
+            // #3 Test with null message and observation! (Message == null ok)
+
+            Assert.That(LoggingHelper.Write(null, 2, null), Is.True);
+        }
+
+        [Test]
+        public void TestNegativeLevel()
+        {
+            LoggingHelper.LogPathFile = ".\\LOG_TEST\\Test.log";
+
+            // #2 Test with level -1! (Level >= 0)
+
+            Assert.Throws<ArgumentException>(() =>
+            {
+                LoggingHelper.Write($"This is the negative test #2!", -1, "Level -1");
+            }, "E-00001-LH: Log message level (-1) is invalid!");
+        }
+
+        [Test]
+        public void TestNullLevel()
+        {
+            LoggingHelper.LogPathFile = ".\\LOG_TEST\\Test.log";
+
+            // #1 Test with null message and level and with observation
+            
+            //Assert.That(LoggingHelper.Write(" ", null, "Null type #1"), Is.True);
+
+            // !!! OK ? null = 0
+
+
+            Assert.Throws<ArgumentException>(() =>
+            {
+                LoggingHelper.Write(" ", null, "Null type #1");
+            }, "E-00001-LH: Log message level cannot be null or empty!");
+        }        
+
+        [Test]
+        public void TestEmptyLevel()
+        {
+            LoggingHelper.LogPathFile = ".\\LOG_TEST\\Test.log";
+
+            // #4 Test with empty level
+
+            //Assert.That(LoggingHelper.Write("Test empty type", "", "Empty type #4"), Is.True);
+
+
+            Assert.Throws<ArgumentException>(() =>
+            {
+                LoggingHelper.Write("Test empty type", "", "Empty type #4");
+            }, "E-00001-LH: Log message level cannot be null or empty!");
+        }
+
+        [Test]
+        public void TestBlankLevel()
+        {
+            LoggingHelper.LogPathFile = ".\\LOG_TEST\\Test.log";
+
+            // #5 Test with blank level            
+
+            Assert.Throws<ArgumentException>(() =>
+            {
+                LoggingHelper.Write("Blank type test", " ", "Blank type #5");
+            }, "E-00001-LH: Log message level cannot be null or empty!");
+        }
+
+        [Test]
+        public void TestInvalityLevel()
+        {
+            LoggingHelper.LogPathFile = ".\\LOG_TEST\\Test.log";
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(LoggingHelper.Write("Test Invality Level 1", "1", null), Is.True);
+                Assert.That(LoggingHelper.Write("Test Invality Level 1", "INFO", null), Is.True);
+            });
+
+            Assert.Throws<ArgumentException>(() =>
+            {
+                LoggingHelper.Write("Test Invality Level 1", "Outro", null);
+            },"E-00002-LH: Log message level (Outro) is not defined in 'Level' property!");
         }
 
         [TestFixture]
@@ -78,13 +167,7 @@ namespace TestLoggingHelper
                          new TestCaseData("", 2,null).Returns(true).SetName("Teste com mensagem vazia sem observação!"),
                          new TestCaseData(" ", 2,null).Returns(true).SetName("Teste com mensagem em branco e sem observação!"),
                          new TestCaseData(" ", 2,"Mensagem em branco").Returns(true).SetName("Teste com mensagem em branco e com observação!"),
-
-                         new TestCaseData(" ", null,"Tipo nulo #1").Returns(true).SetName("#1 Teste com mensagem e tipo nulo e com observação!"), // !!! OK funcionar? Tipo nulo = 0
-                         new TestCaseData($"Esse é o teste negativo #2!", -1,"Nível -1").Returns(false).SetName("#2 Teste nível -1!"), // Nivel >= 0
-                         new TestCaseData(null, 2,null).Returns(true).SetName("#3 Teste com mensagem e observação nula!"), // Mensagem != null
-                         new TestCaseData("Teste tipo vazio", "","Tipo vazio #4").Returns(true).SetName("#4 Teste com tipo vazio com observação!"), // Tipo vazio
-                         new TestCaseData("Teste tipo em branco", " ","Tipo em branco #5").Returns(true).SetName("#5 Teste com mensagem e tipo em branco e comm observação!"), // Tipo em branco
-
+                          
                          new TestCaseData($"Esse é o teste com enumerable 0 (TRACE)!", LoggingHelper.Level.TRACE,"Nível 0").Returns(true).SetName("Teste enum padrão nível 0!"),
                          new TestCaseData($"Esse é o teste com enumerable 5 (CRITICAL)!", (LoggingHelper.Level)5,"Nível 5").Returns(true).SetName("Teste enum padrão nível 5!"),
                          new TestCaseData($"Esse é o teste com enumerable 2 (INFO)!", LoggingHelper.Level.INFO,"Nível 2").Returns(true).SetName("Teste enum padrão nível 2!")
