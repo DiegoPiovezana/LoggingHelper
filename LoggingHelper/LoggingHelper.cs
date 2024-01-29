@@ -170,27 +170,20 @@ namespace LH
         /// <returns>Returns true if the log was written successfully; otherwise, returns false</returns>
         public static bool Write(string message, object level, string obs)
         {
-            int indLevelMessage;
-
-            if (level is int levelInt) { indLevelMessage = levelInt; }
-            else if (level is Level levelEnum) { indLevelMessage = (int)levelEnum; }
-            else if (level is string levelStr) { indLevelMessage = (int)Enum.Parse(typeof(Level), levelStr.Replace("\"","")); }
-            else { throw new ArgumentException("Invalid level parameter.", nameof(level)); }
-
-            if (indLevelMessage < 0) throw new ArgumentException($"E-00001-LH: Log message level ({indLevelMessage}) is invalid!");
+            int intLevelMessage = Treatment.GetIntLevelMessage(level);
 
             string callingMethod = GetCallingMethodName(2, LevelStack);
 
-            if (LogLevelConsole >= 0 && indLevelMessage >= LogLevelConsole)
-            {                
-                WriteLog.ToConsole(message, ((Level)indLevelMessage).ToString(), callingMethod, obs);
+            if (LogLevelConsole >= 0 && intLevelMessage >= LogLevelConsole)
+            {
+                WriteLog.ToConsole(message, ((Level)intLevelMessage).ToString(), callingMethod, obs);
             }
 
-            if (LogLevelFile >= 0 && indLevelMessage >= LogLevelFile)
+            if (LogLevelFile >= 0 && intLevelMessage >= LogLevelFile)
             {
                 if (!_firstChecked) { CheckFile(LogValidity); } // TODO: change to when to boot                
 
-                Task<bool> task = Task.Run(() => WriteLog.ToFile(LogPathFile, message, ((Level)indLevelMessage).ToString(), callingMethod, obs));
+                Task<bool> task = Task.Run(() => WriteLog.ToFile(LogPathFile, message, ((Level)intLevelMessage).ToString(), callingMethod, obs));
 
                 // Wait for log writing for a maximum of 5 seconds
                 if (task.Wait(TimeSpan.FromSeconds(5))) return task.Result;
