@@ -51,7 +51,6 @@ namespace LH
                     if (string.IsNullOrEmpty(levelStr.Trim())) throw new ArgumentException("E-00001-LH: Log message level cannot be null or empty!");
                     if (!Enum.TryParse<LoggingHelper.Level>(levelStr, out var levelEnumStr)) { throw new ArgumentException($"E-00002-LH: Log message level ({levelStr}) is not defined in 'Level' property!"); }
 
-                    //intLevelMessage = (int)Enum.Parse(typeof(LoggingHelper.Level), levelStr);
                     intLevelMessage = (int)levelEnumStr;
                 }
                 else { throw new ArgumentException("Invalid level parameter.", nameof(level)); }
@@ -65,7 +64,6 @@ namespace LH
                 throw;
             }
         }
-
 
 
     }

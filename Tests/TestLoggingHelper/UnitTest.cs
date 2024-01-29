@@ -37,18 +37,40 @@ namespace TestLoggingHelper
         }
 
         [Test]
-        public void TestSimple()
+        [Repeat(50)]
+        public void TestSimple1()
         {           
             //LoggingHelper.LogPath = ".\\LOG_TEST\\Logging_general.log";
             //LoggingHelper.Check();
             //LoggingHelper.Write("This is a trace log message.", 0, "Start application.");
 
-            LoggingHelper.LogPathFile = ".\\LOG_TEST\\Test.log";
+            LoggingHelper.LogPathFile = ".\\LOG_TEST_SIMPLE\\Test.log";
 
-            LoggingHelper.Write("This is level 0.", LoggingHelper.Level.TRACE, "Teste 2.1");
-            LoggingHelper.Write("This is level 5.", (LoggingHelper.Level)5, "Teste 2.2");
-            LoggingHelper.Write("This is level 1.", (int)LoggingHelper.Level.DEBUG, "Teste 2.3");
-        }        
+            Assert.Multiple(() =>
+            {
+                Assert.That(LoggingHelper.Write("This is level 0.", LoggingHelper.Level.TRACE, "Teste 2.1"), Is.True);
+                Assert.That(LoggingHelper.Write("This is level 5.", (LoggingHelper.Level)5, "Teste 2.2"), Is.True);
+                Assert.That(LoggingHelper.Write("This is level 1.", (int)LoggingHelper.Level.DEBUG, "Teste 2.3"), Is.True);
+            });
+        }
+
+        [Test]
+        [Repeat(50)]
+        public void TestSimple2()
+        {
+            //LoggingHelper.LogPath = ".\\LOG_TEST\\Logging_general.log";
+            //LoggingHelper.Check();
+            //LoggingHelper.Write("This is a trace log message.", 0, "Start application.");
+
+            LoggingHelper.LogPathFile = ".\\LOG_TEST_SIMPLE\\Test.log";
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(LoggingHelper.Write("This is level 0.", LoggingHelper.Level.TRACE, "Teste 2.1"), Is.True);
+                Assert.That(LoggingHelper.Write("This is level 5.", (LoggingHelper.Level)5, "Teste 2.2"), Is.True);
+                Assert.That(LoggingHelper.Write("This is level 1.", (int)LoggingHelper.Level.DEBUG, "Teste 2.3"), Is.True);
+            });
+        }
 
         [Test]
         public void TestNullMessage()
@@ -136,6 +158,31 @@ namespace TestLoggingHelper
                 LoggingHelper.Write("Test Invality Level 1", "Outro", null);
             },"E-00002-LH: Log message level (Outro) is not defined in 'Level' property!");
         }
+
+        [TestFixture]
+        public class LoggingTests
+        {
+            [Test]
+            public void TestWriteMultithread()
+            {
+                LoggingHelper.LogPathFile = ".\\LOG_TEST\\Test.log";
+                                
+                var task1 = Task.Run(() =>
+                {
+                    Assert.That(LoggingHelper.Write("Test thread 1", "0", null), Is.True);
+                });
+
+                var task2 = Task.Run(async () =>
+                {                   
+                    await Task.Delay(5000);  // Introducing a 5 second delay to simulate a longer operation
+                    Assert.That(LoggingHelper.Write("Test thread 2", "INFO", null), Is.True);
+                });
+             
+                Task.WaitAll(task1, task2);
+            }
+        }
+
+
 
         [TestFixture]
         public class TestsWrites

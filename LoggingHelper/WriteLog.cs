@@ -15,10 +15,6 @@ namespace LH
 
                 using (StreamWriter writer = new StreamWriter(logPath, true, Encoding.UTF8))
                 {
-                    //writer.Write($"{DateTime.Now} [{levelMessage}] ({nameMethod}) {message.Replace("\n", "").Replace("\r", "")}");
-
-                    //if (!string.IsNullOrEmpty(obs)) writer.Write($" | {obs.Replace("\n", "").Replace("\r", "")}");
-
                     writer.Write(output);
                     writer.WriteLine();
                 }
