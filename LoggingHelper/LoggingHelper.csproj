@@ -12,7 +12,7 @@
      <Description>Library for easy logging.</Description>
      <PackageProjectUrl>https://github.com/DiegoPiovezana/LoggingHelper</PackageProjectUrl>
      <RepositoryUrl>https://github.com/DiegoPiovezana/LoggingHelper</RepositoryUrl>
-     <PackageTags>log;loggin;logger;tracing;eventlog;logfiles</PackageTags>
+     <PackageTags>log;logging;logger;tracing;eventlog;logfiles;trace;logs;helper;happy;happyHelper</PackageTags>
      <PackageReleaseNotes>- Ability to log messages to the console
 - Customize log output format using `FormatLogOutput`
 - Default inclusion of millisecond logging
