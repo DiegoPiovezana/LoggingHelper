@@ -20,7 +20,16 @@ namespace TestLoggingHelper
         {
             try
             {
-                //LoggingHelper.Check();
+                // Optional
+                //LoggingHelper.CheckFile(2,false);
+                LoggingHelper.FormatLogOutput = "[<level>] <yyyy-MM-dd HH:mm:ss.fff> (<stack>) <message> | <obs>";
+                //LoggingHelper.LevelStack = 3;
+                //LoggingHelper.LogValidity = 2;
+
+                //LoggingHelper.LogPathFile = @".\LOG_TEST\Logging_general.log";
+                //LoggingHelper.LogLevelFile = 0;
+                //LoggingHelper.LogLevelConsole = 0;
+
                 LoggingHelper.Write("This is a trace log message.", 0, "Start application.");
                 LoggingHelper.Write("Debug message.", 1, null);
                 LoggingHelper.Write("This is a message for an information log [2].", 2, null);
@@ -33,6 +42,36 @@ namespace TestLoggingHelper
             catch (Exception ex)
             {
                 LoggingHelper.Write("This is a log message for logging errors!", 4, ex.Message);
+            }
+        }
+
+        [Test]
+        public void CodeExampleReadme_PtBR()
+        {
+            try
+            {
+                // Opcional
+                //LoggingHelper.CheckFile(2, false);
+                //LoggingHelper.FormatLogOutput = "[<level>] <yyyy-MM-dd HH:mm:ss.fff> (<stack>) <message> | <obs>";
+                //LoggingHelper.LevelStack = 3;
+                //LoggingHelper.LogValidity = 2;
+
+                //LoggingHelper.LogPathFile = @".\LOG_TEST\Logging_general.log";
+                //LoggingHelper.LogLevelFile = 0;
+                //LoggingHelper.LogLevelConsole = 0;
+
+                LoggingHelper.Write("Esta é uma mensagem de log de rastreamento.", 0, "Iniciar app.");
+                LoggingHelper.Write("Mensagem de depuração.", 1, null);
+                LoggingHelper.Write("Esta é uma mensagem para um log de informação [2].", 2, null);
+                LoggingHelper.Write("Esta é também uma mensagem para um log de informação [3].", LoggingHelper.Level.INFO, null);
+                LoggingHelper.Write("Esta é também uma mensagem para um log de informação [4].", "INFO", null);
+                LoggingHelper.Write("Esta é também uma mensagem para um log de informação [5].", "2", null);
+
+                throw new Exception();
+            }
+            catch (Exception ex)
+            {
+                LoggingHelper.Write("Esta é uma mensagem de log para registrar erros!", 4, ex.Message);
             }
         }
 

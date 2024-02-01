@@ -10,21 +10,30 @@ Biblioteca para fácil registro de logs.<br/>
 
 ## RECURSOS DISPONÍVEIS:<br/>
 ✔ Permite o registro de logs com diferentes níveis de gravidade;<br/>
-✔ Use o método `Write` para escrever logs no arquivo;<br/>
+✔ Use o método `Write` para escrever logs;<br/>
+✔ Registre logs no formato que desejar personalizando `FormatLogOutput`;<br/>
 ✔ Use a propriedade `LevelStack` para definir o nível máximo a ser considerado na pilha de métodos;<br/>
 ✔ A propriedade `LogValidity` permite definir o tempo máximo (em dias) para o arquivo de log ser resetado;<br/>
-✔ `LogLevel` representa o nível mínimo de log a ser registrado no arquivo;<br/>
-✔ A propriedade `LogPath` define o local e o arquivo onde o log deve ser registrado;<br/>
-✔ Use o método `Check` para ocultar o diretório de log;<br/>
+✔ `LogLevelFile` representa o nível mínimo de log a ser registrado no arquivo;<br/>
+✔ A propriedade `LogPathFile` define o local e o arquivo onde o log deve ser registrado;<br/>
+✔ `LogLevelConsole` define o nível mínimo de log a ser registrado no console;<br/>
+✔ Altere o enum `Level` para personalizar os níveis de log;<br/>
+✔ Defina o nível do log utilizando enumeração, número ou texto;<br/>
+✔ Use o método `CheckFile` para ocultar o diretório de log e realizar validações;<br/>
 ✔ `GetCallingMethodName` permite identificar o método que registrou o log considerando o nível da pilha;<br/>
-✔ Logs antigos podem ser automaticamente excluídos por meio do método de verificação inicial (`Check`);<br/> 
+✔ Arquivos de logs antigos podem ser automaticamente excluídos por meio do método de verificação (`CheckFile`);<br/> 
 ✔ Mais recursos em breve.<br/>
+
+<br/><br/>
+
+## FEEDBACK:
+https://bit.ly/FeedbackHappyHelper
 
 <br/><br/>
 
 ## INSTALAÇÃO:
 ```
- dotnet add package LoggingHelper --version 1.1.0
+ dotnet add package LoggingHelper --version 1.2.0
 ```
 
 <br/><br/>
@@ -42,16 +51,30 @@ namespace App
         static void Main()
         {
             try
-            {                
-                LoggingHelper.Write("Esta é um mensagem de log de rastreamento (trace).", 0, "Início app.");
-                LoggingHelper.Write("Mensagem de depuração (debug).", 1, null);
-                LoggingHelper.Write("Esta é uma mensagem para um log de informação (info).", 2, null);             
-                LoggingHelper.Write("Esta também é uma mensagem para um log de informação (info).", LoggingHelper.Level.INFO, null); 
+            {
+                // Opcional
+                //LoggingHelper.CheckFile(2, false);
+                //LoggingHelper.FormatLogOutput = "[<level>] <yyyy-MM-dd HH:mm:ss.fff> (<stack>) <message> | <obs>";
+                //LoggingHelper.LevelStack = 3;
+                //LoggingHelper.LogValidity = 2;
+
+                //LoggingHelper.LogPathFile = @".\LOG_TEST\Logging_general.log";
+                //LoggingHelper.LogLevelFile = 0;
+                //LoggingHelper.LogLevelConsole = 0;
+
+                LoggingHelper.Write("Esta é uma mensagem de log de rastreamento.", 0, "Iniciar app.");
+                LoggingHelper.Write("Mensagem de depuração.", 1, null);
+                LoggingHelper.Write("Esta é uma mensagem para um log de informação [2].", 2, null);
+                LoggingHelper.Write("Esta é também uma mensagem para um log de informação [3].", LoggingHelper.Level.INFO, null);
+                LoggingHelper.Write("Esta é também uma mensagem para um log de informação [4].", "INFO", null);
+                LoggingHelper.Write("Esta é também uma mensagem para um log de informação [5].", "2", null);
+
+                throw new Exception();
             }
             catch (Exception ex)
             {
                 LoggingHelper.Write("Esta é uma mensagem de log para registrar erros!", 4, ex.Message);
-            }            
+            }           
         }
     }
 }
@@ -61,9 +84,11 @@ namespace App
 
 ### Resultado:
 ```console
-20/08/2023 14:06:56 [TRACE] (/Main) Esta é um mensagem de log de rastreamento (trace). | Início app.
-20/08/2023 14:06:56 [DEBUG] (/Main) Mensagem de depuração (debug).
-20/08/2023 14:06:56 [INFO] (/Main) Esta é uma mensagem para um log de informação (info).
-20/08/2023 14:06:56 [INFO] (/Main) Esta também é uma mensagem para um log de informação (info).
-20/08/2023 14:06:56 [ERROR] (/Main) Esta é uma mensagem de log para registrar erros! | Exceção do tipo 'System.Exception' foi lançada.
+01/02/2024 14:19:18.483 [TRACE] (/Main) Esta é uma mensagem de log de rastreamento. | Iniciar app.
+01/02/2024 14:19:18.486 [DEBUG] (/Main) Mensagem de depuração.
+01/02/2024 14:19:18.486 [INFO] (/Main) Esta é uma mensagem para um log de informação [2].
+01/02/2024 14:19:18.487 [INFO] (/Main) Esta é também uma mensagem para um log de informação [3].
+01/02/2024 14:19:18.488 [INFO] (/Main) Esta é também uma mensagem para um log de informação [4].
+01/02/2024 14:19:18.488 [INFO] (/Main) Esta é também uma mensagem para um log de informação [5].
+01/02/2024 14:19:18.489 [ERROR] (/Main) Esta é uma mensagem de log para registrar erros! | Exception of type 'System.Exception' was thrown.
 ```

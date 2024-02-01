@@ -13,9 +13,10 @@
      <PackageProjectUrl>https://github.com/DiegoPiovezana/LoggingHelper</PackageProjectUrl>
      <RepositoryUrl>https://github.com/DiegoPiovezana/LoggingHelper</RepositoryUrl>
      <PackageTags>log;loggin;logger;tracing;eventlog;logfiles</PackageTags>
-     <PackageReleaseNotes>Allowing to define log level also using enum;
-Automatic log file checking;
-Possible to set the validity (in days) for resetting the log file.</PackageReleaseNotes>
+     <PackageReleaseNotes>- Ability to log messages to the console
+- Customize log output format using `FormatLogOutput`
+- Default inclusion of millisecond logging
+- Set log level using enumeration, number or text</PackageReleaseNotes>
      <PackageLicenseFile>License.txt</PackageLicenseFile>
      <AssemblyVersion>1.1.0</AssemblyVersion>
      <FileVersion>1.1.0</FileVersion>

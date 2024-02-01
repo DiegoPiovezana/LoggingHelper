@@ -398,6 +398,4 @@ FodyWeavers.xsd
 *.sln.iml
 
 # Others
-
-
-
+LoggingHelper/LoggingHelper.sln
