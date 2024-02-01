@@ -9,22 +9,32 @@ Library for easy logging.<br/>
 
 
 ## AVAILABLE FEATURES:<br/>
-✔ Allows logging with different levels of severity;<br/>
-✔ Use the `Write` method to write logs to the file;<br/>
-✔ Use the `LevelStack` property to define the maximum level to be considered in the method stack;<br/>
-✔ The `LogValidity` property allows defining the maximum time (in days) for the log file to be reset;<br/>
-✔ `LogLevel` represents the minimum level of log to be recorded in the file;<br/>
-✔ The `LogPath` property define the location and file where the log should be recorded;<br/>
-✔ Use the `Check` method to perform all validations before writing the log;<br/>
-✔ `GetCallingMethodName` allows to identify who called considering stack level;<br/>
-✔ Old logs can be automatically deleted through the initial check method (`Check`);<br/>
-✔ More features coming soon.<br/>  
+✔ Allows logging with different severity levels;<br/>
+✔ Use the `Write` method to write logs;<br/>
+✔ Customize log output format using `FormatLogOutput`;<br/>
+✔ Use the `LevelStack` property to set the maximum level to be considered in the method stack;<br/>
+✔ The `LogValidity` property allows setting the maximum time (in days) for the log file to be reset;<br/>
+✔ `LogLevelFile` represents the minimum log level to be recorded in the file;<br/>
+✔ The `LogPathFile` property defines the location and file where the log should be recorded;<br/>
+✔ `LogLevelConsole` sets the minimum log level to be recorded on the console;<br/>
+✔ Modify the `Level` enum to customize log levels;<br/>
+✔ Set the log level using enumeration, number, or text;<br/>
+✔ Use the `CheckFile` method to hide the log directory and perform validations;<br/>
+✔ `GetCallingMethodName` allows identifying the method that logged the message considering the stack level;<br/>
+✔ Old log files can be automatically deleted through the check method (`CheckFile`);<br/> 
+✔ More features coming soon.<br/>
+
+
+<br/><br/>
+
+## FEEDBACK:
+https://bit.ly/FeedbackHappyHelper
 
 <br/><br/>
 
 ## INSTALLATION:
 ```
- dotnet add package LoggingHelper --version 1.1.0
+ dotnet add package LoggingHelper --version 1.2.0
 ```
 
 <br/><br/>
@@ -42,16 +52,30 @@ namespace App
         static void Main()
         {
             try
-            {                
+            {
+                // Optional
+                //LoggingHelper.CheckFile(2,false);
+                LoggingHelper.FormatLogOutput = "[<level>] <yyyy-MM-dd HH:mm:ss.fff> (<stack>) <message> | <obs>";
+                //LoggingHelper.LevelStack = 3;
+                //LoggingHelper.LogValidity = 2;
+
+                //LoggingHelper.LogPathFile = @".\LOG_TEST\Logging_general.log";
+                //LoggingHelper.LogLevelFile = 0;
+                //LoggingHelper.LogLevelConsole = 0;
+
                 LoggingHelper.Write("This is a trace log message.", 0, "Start application.");
                 LoggingHelper.Write("Debug message.", 1, null);
-                LoggingHelper.Write("This is a message for an information log.", 2, null);             
-                LoggingHelper.Write("This is also a message for an information log.", LoggingHelper.Level.INFO, null); 
+                LoggingHelper.Write("This is a message for an information log [2].", 2, null);
+                LoggingHelper.Write("This is also a message for an information log [3].", LoggingHelper.Level.INFO, null);
+                LoggingHelper.Write("This is also a message for an information log [4].", "INFO", null);
+                LoggingHelper.Write("This is also a message for an information log [5].", "2", null);
+
+                throw new Exception();
             }
             catch (Exception ex)
             {
                 LoggingHelper.Write("This is a log message for logging errors!", 4, ex.Message);
-            }            
+            }           
         }
     }
 }
@@ -61,9 +85,11 @@ namespace App
 
 ### Result:
 ```console
-20/08/2023 14:06:56 [TRACE] (/Main) This is a trace log message. | Start application.
-20/08/2023 14:06:56 [DEBUG] (/Main) Debug message.
-20/08/2023 14:06:56 [INFO] (/Main) This is a message for an information log.
-20/08/2023 14:06:56 [INFO] (/Main) This is also a message for an information log.
-20/08/2023 14:06:56 [ERROR] (/Main) This is a log message for logging errors! | Exception of type 'System.Exception' was thrown.
+[TRACE] 2024-02-01 14:23:18.721 (/Main) This is a trace log message. | Start application.
+[DEBUG] 2024-02-01 14:23:18.725 (/Main) Debug message.
+[INFO] 2024-02-01 14:23:18.725 (/Main) This is a message for an information log [2].
+[INFO] 2024-02-01 14:23:18.726 (/Main) This is also a message for an information log [3].
+[INFO] 2024-02-01 14:23:18.727 (/Main) This is also a message for an information log [4].
+[INFO] 2024-02-01 14:23:18.727 (/Main) This is also a message for an information log [5].
+[ERROR] 2024-02-01 14:23:18.728 (/Main) This is a log message for logging errors! | Exception of type 'System.Exception' was thrown.
 ```
