@@ -38,15 +38,19 @@
             LogLevelFileLbl = new Label();
             LevelStackLbl = new Label();
             PanelConfigFile = new Panel();
-            LogLevelFileNud = new NumericUpDown();
+            BtnEditLogPathFile = new Button();
             LogPathFileTxb = new TextBox();
+            LogLevelFileNud = new NumericUpDown();
             PanelConfigLib = new Panel();
             LogValidityNud = new NumericUpDown();
             LevelStackNud = new NumericUpDown();
             FormatLogOutputTxb = new TextBox();
             FormatLogOutputLbl = new Label();
             PanelConfigConsole = new Panel();
+            LogLevelTraceNud = new NumericUpDown();
             LogLevelConsoleNud = new NumericUpDown();
+            LogLevelLbl = new Label();
+            LogLevelTraceLbl = new Label();
             ErrorBtn = new Button();
             WarningBtn = new Button();
             DebugBtn = new Button();
@@ -68,6 +72,7 @@
             ((System.ComponentModel.ISupportInitialize)LogValidityNud).BeginInit();
             ((System.ComponentModel.ISupportInitialize)LevelStackNud).BeginInit();
             PanelConfigConsole.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)LogLevelTraceNud).BeginInit();
             ((System.ComponentModel.ISupportInitialize)LogLevelConsoleNud).BeginInit();
             PanelButtons.SuspendLayout();
             PanelInput.SuspendLayout();
@@ -125,13 +130,13 @@
             // 
             LogLevelConsoleLbl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             LogLevelConsoleLbl.AutoSize = true;
-            LogLevelConsoleLbl.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            LogLevelConsoleLbl.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             LogLevelConsoleLbl.ForeColor = Color.White;
-            LogLevelConsoleLbl.Location = new Point(24, 10);
+            LogLevelConsoleLbl.Location = new Point(24, 29);
             LogLevelConsoleLbl.Name = "LogLevelConsoleLbl";
-            LogLevelConsoleLbl.Size = new Size(126, 20);
+            LogLevelConsoleLbl.Size = new Size(62, 20);
             LogLevelConsoleLbl.TabIndex = 3;
-            LogLevelConsoleLbl.Text = "LogLevelConsole";
+            LogLevelConsoleLbl.Text = "Console";
             // 
             // LogValidityLbl
             // 
@@ -149,13 +154,13 @@
             // 
             LogLevelFileLbl.Anchor = AnchorStyles.Bottom;
             LogLevelFileLbl.AutoSize = true;
-            LogLevelFileLbl.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            LogLevelFileLbl.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             LogLevelFileLbl.ForeColor = Color.White;
-            LogLevelFileLbl.Location = new Point(26, 78);
+            LogLevelFileLbl.Location = new Point(24, 81);
             LogLevelFileLbl.Name = "LogLevelFileLbl";
-            LogLevelFileLbl.Size = new Size(95, 20);
+            LogLevelFileLbl.Size = new Size(32, 20);
             LogLevelFileLbl.TabIndex = 3;
-            LogLevelFileLbl.Text = "LogLevelFile";
+            LogLevelFileLbl.Text = "File";
             // 
             // LevelStackLbl
             // 
@@ -173,33 +178,43 @@
             // 
             PanelConfigFile.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
             PanelConfigFile.BorderStyle = BorderStyle.Fixed3D;
-            PanelConfigFile.Controls.Add(LogLevelFileNud);
+            PanelConfigFile.Controls.Add(BtnEditLogPathFile);
             PanelConfigFile.Controls.Add(LogPathFileLbl);
-            PanelConfigFile.Controls.Add(LogLevelFileLbl);
             PanelConfigFile.Controls.Add(LogPathFileTxb);
             PanelConfigFile.Location = new Point(469, 216);
             PanelConfigFile.Name = "PanelConfigFile";
-            PanelConfigFile.Size = new Size(239, 149);
+            PanelConfigFile.Size = new Size(239, 87);
             PanelConfigFile.TabIndex = 5;
             // 
-            // LogLevelFileNud
+            // BtnEditLogPathFile
             // 
-            LogLevelFileNud.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            LogLevelFileNud.Location = new Point(28, 101);
-            LogLevelFileNud.Name = "LogLevelFileNud";
-            LogLevelFileNud.Size = new Size(150, 27);
-            LogLevelFileNud.TabIndex = 6;
-            LogLevelFileNud.ValueChanged += LogLevelFileNud_ValueChanged;
+            BtnEditLogPathFile.Anchor = AnchorStyles.Top | AnchorStyles.Bottom;
+            BtnEditLogPathFile.Location = new Point(205, 33);
+            BtnEditLogPathFile.Name = "BtnEditLogPathFile";
+            BtnEditLogPathFile.Size = new Size(14, 0);
+            BtnEditLogPathFile.TabIndex = 7;
+            BtnEditLogPathFile.UseVisualStyleBackColor = true;
+            BtnEditLogPathFile.Click += BtnEditLogPathFile_Click;
             // 
             // LogPathFileTxb
             // 
             LogPathFileTxb.Anchor = AnchorStyles.Top | AnchorStyles.Bottom;
             LogPathFileTxb.Location = new Point(26, 33);
             LogPathFileTxb.Name = "LogPathFileTxb";
-            LogPathFileTxb.Size = new Size(188, 27);
+            LogPathFileTxb.Size = new Size(173, 27);
             LogPathFileTxb.TabIndex = 4;
             LogPathFileTxb.TextChanged += LogPathFileTxb_TextChanged;
             LogPathFileTxb.MouseDoubleClick += LogPathFileTxb_MouseDoubleClick;
+            // 
+            // LogLevelFileNud
+            // 
+            LogLevelFileNud.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            LogLevelFileNud.Location = new Point(24, 104);
+            LogLevelFileNud.Name = "LogLevelFileNud";
+            LogLevelFileNud.Size = new Size(175, 27);
+            LogLevelFileNud.TabIndex = 6;
+            LogLevelFileNud.TextAlign = HorizontalAlignment.Center;
+            LogLevelFileNud.ValueChanged += LogLevelFileNud_ValueChanged;
             // 
             // PanelConfigLib
             // 
@@ -257,20 +272,59 @@
             // 
             PanelConfigConsole.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             PanelConfigConsole.BorderStyle = BorderStyle.Fixed3D;
+            PanelConfigConsole.Controls.Add(LogLevelTraceNud);
             PanelConfigConsole.Controls.Add(LogLevelConsoleNud);
+            PanelConfigConsole.Controls.Add(LogLevelFileNud);
+            PanelConfigConsole.Controls.Add(LogLevelFileLbl);
+            PanelConfigConsole.Controls.Add(LogLevelLbl);
+            PanelConfigConsole.Controls.Add(LogLevelTraceLbl);
             PanelConfigConsole.Controls.Add(LogLevelConsoleLbl);
-            PanelConfigConsole.Location = new Point(469, 382);
+            PanelConfigConsole.Location = new Point(469, 309);
             PanelConfigConsole.Name = "PanelConfigConsole";
-            PanelConfigConsole.Size = new Size(239, 77);
+            PanelConfigConsole.Size = new Size(239, 150);
             PanelConfigConsole.TabIndex = 5;
+            // 
+            // LogLevelTraceNud
+            // 
+            LogLevelTraceNud.Location = new Point(127, 48);
+            LogLevelTraceNud.Name = "LogLevelTraceNud";
+            LogLevelTraceNud.Size = new Size(72, 27);
+            LogLevelTraceNud.TabIndex = 6;
+            LogLevelTraceNud.TextAlign = HorizontalAlignment.Center;
+            LogLevelTraceNud.ValueChanged += LogLevelTraceNud_ValueChanged;
             // 
             // LogLevelConsoleNud
             // 
-            LogLevelConsoleNud.Location = new Point(28, 29);
+            LogLevelConsoleNud.Location = new Point(24, 48);
             LogLevelConsoleNud.Name = "LogLevelConsoleNud";
-            LogLevelConsoleNud.Size = new Size(150, 27);
+            LogLevelConsoleNud.Size = new Size(77, 27);
             LogLevelConsoleNud.TabIndex = 6;
+            LogLevelConsoleNud.TextAlign = HorizontalAlignment.Center;
             LogLevelConsoleNud.ValueChanged += LogLevelConsoleNud_ValueChanged;
+            // 
+            // LogLevelLbl
+            // 
+            LogLevelLbl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            LogLevelLbl.AutoSize = true;
+            LogLevelLbl.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            LogLevelLbl.ForeColor = Color.White;
+            LogLevelLbl.Location = new Point(24, 0);
+            LogLevelLbl.Name = "LogLevelLbl";
+            LogLevelLbl.Size = new Size(71, 20);
+            LogLevelLbl.TabIndex = 3;
+            LogLevelLbl.Text = "LogLevel";
+            // 
+            // LogLevelTraceLbl
+            // 
+            LogLevelTraceLbl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            LogLevelTraceLbl.AutoSize = true;
+            LogLevelTraceLbl.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            LogLevelTraceLbl.ForeColor = Color.White;
+            LogLevelTraceLbl.Location = new Point(127, 29);
+            LogLevelTraceLbl.Name = "LogLevelTraceLbl";
+            LogLevelTraceLbl.Size = new Size(44, 20);
+            LogLevelTraceLbl.TabIndex = 3;
+            LogLevelTraceLbl.Text = "Trace";
             // 
             // ErrorBtn
             // 
@@ -446,6 +500,7 @@
             ((System.ComponentModel.ISupportInitialize)LevelStackNud).EndInit();
             PanelConfigConsole.ResumeLayout(false);
             PanelConfigConsole.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)LogLevelTraceNud).EndInit();
             ((System.ComponentModel.ISupportInitialize)LogLevelConsoleNud).EndInit();
             PanelButtons.ResumeLayout(false);
             PanelButtons.PerformLayout();
@@ -489,5 +544,9 @@
         private TextBox FormatLogOutputTxb;
         private Label FormatLogOutputLbl;
         private TextBox LevelTxb;
+        private Button BtnEditLogPathFile;
+        private Label LogLevelTraceLbl;
+        private Label LogLevelLbl;
+        private NumericUpDown LogLevelTraceNud;
     }
 }

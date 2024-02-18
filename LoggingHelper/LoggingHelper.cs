@@ -43,6 +43,17 @@ namespace LH
         }
 
         /// <summary>
+        /// Minimum level to be logged in the log trace.
+        /// <para>Example: If set to 2, TRACE and DEBUG logs will not be logged.</para>
+        /// <para>Enter a negative number to avoid recording logs.</para>
+        /// </summary>
+        public static int LogLevelTrace
+        {
+            get => LogDefault.LogLevelTrace;
+            set { LogDefault.LogLevelTrace = value; }
+        }
+
+        /// <summary>
         /// Minimum level to be logged in the log console.
         /// <para>Example: If set to 2, TRACE and DEBUG logs will not be logged.</para>
         /// <para>Enter a negative number to avoid recording logs.</para>
@@ -51,7 +62,7 @@ namespace LH
         {
             get => LogDefault.LogLevelConsole;
             set { LogDefault.LogLevelConsole = value; }
-        }
+        }       
 
         /// <summary>
         /// Location where the log file will be stored.

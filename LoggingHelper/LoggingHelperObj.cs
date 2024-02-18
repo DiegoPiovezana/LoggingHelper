@@ -29,12 +29,18 @@ namespace LH
         public int LogLevelFile { get; set; } = 0;
 
         /// <summary>
+        /// Minimum level to be logged in the log trace.
+        /// <para>Example: If set to 2, TRACE and DEBUG logs will not be logged.</para>
+        /// <para>Enter a negative number to avoid recording logs.</para>
+        /// </summary>
+        public int LogLevelTrace { get; set; } = -1;
+
+        /// <summary>
         /// Minimum level to be logged in the log console.
         /// <para>Example: If set to 2, TRACE and DEBUG logs will not be logged.</para>
         /// <para>Enter a negative number to avoid recording logs.</para>
         /// </summary>
         public int LogLevelConsole { get; set; } = -1;
-
 
         private bool _firstChecked = false;
         private string _logPath = ".\\LOG_LH\\Logging_general.log";
@@ -152,8 +158,13 @@ namespace LH
 
             string callingMethod = GetCallingMethodName(2, LevelStack);
 
-            if (LogLevelConsole >= 0 && intLevelMessage >= LogLevelConsole)
+            if (LogLevelTrace >= 0 && intLevelMessage >= LogLevelTrace)
             {
+                WriteLog.ToTrace(message, ((Level)intLevelMessage).ToString(), callingMethod, obs);                
+            }
+
+            if (LogLevelConsole >= 0 && intLevelMessage >= LogLevelConsole)
+            {                
                 WriteLog.ToConsole(message, ((Level)intLevelMessage).ToString(), callingMethod, obs);
             }
 

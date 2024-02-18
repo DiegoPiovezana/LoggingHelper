@@ -1,4 +1,5 @@
 using LH;
+using System.Diagnostics;
 
 namespace WinFormsApp1
 {
@@ -26,6 +27,10 @@ namespace WinFormsApp1
             LogLevelFileNud.Maximum = Enum.GetValues(typeof(LoggingHelper.Level)).Length - 1;
             LogLevelFileNud.Minimum = -1;
             LogLevelFileNud.Value = 0;
+
+            LogLevelTraceNud.Maximum = Enum.GetValues(typeof(LoggingHelper.Level)).Length - 1;
+            LogLevelTraceNud.Minimum = -1;
+            LogLevelTraceNud.Value = 0;
 
             LogLevelConsoleNud.Maximum = Enum.GetValues(typeof(LoggingHelper.Level)).Length - 1;
             LogLevelConsoleNud.Minimum = -1;
@@ -89,6 +94,7 @@ namespace WinFormsApp1
             LoggingHelper.FormatLogOutput = FormatLogOutputTxb.Text;
             LoggingHelper.LogPathFile = LogPathFileTxb.Text;
             LoggingHelper.LogLevelFile = (int)LogLevelFileNud.Value;
+            LoggingHelper.LogLevelTrace = (int)LogLevelTraceNud.Value;
             LoggingHelper.LogLevelConsole = (int)LogLevelConsoleNud.Value;
         }
 
@@ -102,9 +108,14 @@ namespace WinFormsApp1
             LoggingHelper.LevelStack = (int)LevelStackNud.Value;
         }
 
-        private void LogPathFileTxb_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void BtnEditLogPathFile_Click(object sender, EventArgs e)
         {
             if (LogPathFileFbd.ShowDialog() == DialogResult.OK) { LogPathFileTxb.Text = LogPathFileFbd.SelectedPath + "\\LoggingLH_Test.log"; }
+        }
+
+        private void LogPathFileTxb_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            Process.Start("explorer.exe", "/select," + LogPathFileTxb.Text);
         }
 
         private void LogPathFileTxb_TextChanged(object sender, EventArgs e)
@@ -127,11 +138,16 @@ namespace WinFormsApp1
             LoggingHelper.LogLevelFile = (int)LogLevelFileNud.Value;
         }
 
+        private void LogLevelTraceNud_ValueChanged(object sender, EventArgs e)
+        {
+            LoggingHelper.LogLevelTrace = (int)LogLevelTraceNud.Value;
+        }
+
         private void LogLevelConsoleNud_ValueChanged(object sender, EventArgs e)
         {
             LoggingHelper.LogLevelConsole = (int)LogLevelConsoleNud.Value;
         }
-
         
+
     }
 }
