@@ -146,7 +146,7 @@ namespace LH
         }        
 
         /// <summary>
-        /// Write a message to the log file.
+        /// Write a message to the log.
         /// </summary>
         /// <param name="message">Message to be logged</param>
         /// <param name="level">Set the level of this log. TRACE = 0, DEBUG = 1, INFO = 2, WARNING = 3, ERROR = 4, CRITICAL = 5</param>

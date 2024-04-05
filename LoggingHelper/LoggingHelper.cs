@@ -11,7 +11,7 @@ namespace LH
         /// <summary>
         /// The default log object for static use.
         /// </summary>
-        public static readonly LoggingHelperObj LogDefault = new LoggingHelperObj();
+        public static LoggingHelperObj LogDefault = new LoggingHelperObj();
 
         /// <summary>
         /// Maximum hierarchical level to be logged in the method stack (final index). Example: 5
@@ -129,8 +129,15 @@ namespace LH
         }
 
 
-
-
+        /// <summary>
+        /// Restores all properties to default values.
+        /// </summary>
+        /// <returns></returns>
+        public static bool ResetLog()
+        {
+            LogDefault = new LoggingHelperObj();
+            return true;
+        }
 
         /// <summary>
         /// Checks if the log file is older than a specified number of days and deletes it if necessary. It also checks if the directory is valid and creates it if it doesn't exist.
