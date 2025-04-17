@@ -52,7 +52,7 @@
             set { LogDefault.LogPathFile = value; CheckFile(LogValidity); }
         }
 
-        /// <inheritdoc cref="ILoggingHelper.FormatLogOutput"/>       
+        /// <inheritdoc cref="ILoggingHelper.FormatLogOutput"/>
         public static string FormatLogOutput
         {
             get => LogDefault.FormatLogOutput;

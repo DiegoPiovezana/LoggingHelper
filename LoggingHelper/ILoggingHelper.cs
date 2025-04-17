@@ -40,7 +40,8 @@
         string LogPathFile { get; set; }
 
         /// <summary>
-        /// The format of the log message.
+        /// Log template. Use placeholders between &lt; and &gt;.
+        /// Example: "&lt;dd/MM/yyyy HH:mm:ss.fff&gt; [&lt;level&gt;] (&lt;stack&gt;) &lt;message&gt; | &lt;obs&gt;"
         /// </summary>
         string FormatLogOutput { get; set; }
 
