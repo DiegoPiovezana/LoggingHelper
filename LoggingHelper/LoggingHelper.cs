@@ -1,7 +1,4 @@
-﻿using System.Diagnostics;
-using System.Text;
-
-namespace LH
+﻿namespace LH
 {
     /// <summary>
     /// Library for logging.
@@ -11,72 +8,51 @@ namespace LH
         /// <summary>
         /// The default log object for static use.
         /// </summary>
-        public static LoggingHelperObj LogDefault = new LoggingHelperObj();
+        private static ILoggingHelper LogDefault = new LoggingHelperObj();
 
-        /// <summary>
-        /// Maximum hierarchical level to be logged in the method stack (final index). Example: 5
-        /// </summary>
+        /// <inheritdoc cref="ILoggingHelper.LevelStack"/>
         public static int LevelStack
         {
             get => LogDefault.LevelStack;
             set { LogDefault.LevelStack = value; }
         }
 
-        /// <summary>
-        /// The number of days after which the log file should be considered outdated and will be deleted. Default is 3 days.
-        /// </summary>
+        /// <inheritdoc cref="ILoggingHelper.LogValidity"/>
         public static int LogValidity
         {
             get => LogDefault.LogValidity;
             set { LogDefault.LogValidity = value; }
         }
 
-        /// <summary>
-        /// Minimum level to be logged in the log file.
-        /// <para>Example: If set to 2, TRACE and DEBUG logs will not be logged.</para>
-        /// <para>Enter a negative number to avoid recording logs.</para>
-        /// </summary>
+        /// <inheritdoc cref="ILoggingHelper.LogLevelFile"/>
         public static int LogLevelFile
         {
             get => LogDefault.LogLevelFile;
             set { LogDefault.LogLevelFile = value; }
         }
 
-        /// <summary>
-        /// Minimum level to be logged in the log trace.
-        /// <para>Example: If set to 2, TRACE and DEBUG logs will not be logged.</para>
-        /// <para>Enter a negative number to avoid recording logs.</para>
-        /// </summary>
+        /// <inheritdoc cref="ILoggingHelper.LogLevelTrace"/>
         public static int LogLevelTrace
         {
             get => LogDefault.LogLevelTrace;
             set { LogDefault.LogLevelTrace = value; }
         }
 
-        /// <summary>
-        /// Minimum level to be logged in the log console.
-        /// <para>Example: If set to 2, TRACE and DEBUG logs will not be logged.</para>
-        /// <para>Enter a negative number to avoid recording logs.</para>
-        /// </summary>
+        /// <inheritdoc cref="ILoggingHelper.LogLevelConsole"/>
         public static int LogLevelConsole
         {
             get => LogDefault.LogLevelConsole;
             set { LogDefault.LogLevelConsole = value; }
-        }       
+        }
 
-        /// <summary>
-        /// Location where the log file will be stored.
-        /// (Specify a different location or filename to use different log files).
-        /// </summary>
+        /// <inheritdoc cref="ILoggingHelper.LogPathFile"/>
         public static string LogPathFile
         {
             get => LogDefault.LogPathFile;
             set { LogDefault.LogPathFile = value; CheckFile(LogValidity); }
         }
 
-        /// <summary>
-        /// The format of the log message.
-        /// </summary>        
+        /// <inheritdoc cref="ILoggingHelper.FormatLogOutput"/>       
         public static string FormatLogOutput
         {
             get => LogDefault.FormatLogOutput;
@@ -122,62 +98,77 @@ namespace LH
         /// <summary>
         /// Create a new log object.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>LoggingHelperObj</returns>
         public static LoggingHelperObj NewLog()
         {
             return new LoggingHelperObj();
         }
 
-
         /// <summary>
         /// Restores all properties to default values.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>True if the log was successfully reset; otherwise, false.</returns>
         public static bool ResetLog()
         {
             LogDefault = new LoggingHelperObj();
             return true;
         }
 
-        /// <summary>
-        /// Checks if the log file is older than a specified number of days and deletes it if necessary. It also checks if the directory is valid and creates it if it doesn't exist.
-        /// </summary>
-        /// <param name="days">The number of days after which the log file should be considered outdated. Default is 3 days.</param>
-        /// <param name="hidden">Specifies whether the directory should be hidden. Default is true.</param>
+        /// <inheritdoc cref="ILoggingHelper.CheckFile(int, bool)"/>
         public static bool CheckFile(int days = 3, bool hidden = true)
         {
             return LogDefault.CheckFile(days, hidden);
         }
 
-        /// <summary>
-        /// Deletes the log file defined in the LogPath attribute.
-        /// </summary>
-        /// <returns>True if the file was successfully deleted, otherwise false.</returns>
+        /// <inheritdoc cref="ILoggingHelper.DeleteLogFile"/>
         public static bool DeleteLogFile()
         {
             return LogDefault.DeleteLogFile();
         }
 
-        /// <summary>
-        /// Write a message to the log file.
-        /// </summary>
-        /// <param name="message">Message to be logged</param>
-        /// <param name="level">Set the level of this log. TRACE = 0, DEBUG = 1, INFO = 2, WARNING = 3, ERROR = 4, CRITICAL = 5</param>
-        /// <param name="obs">Provide any additional information you deem necessary (optional)</param>
-        /// <returns>Returns true if the log was written successfully; otherwise, returns false</returns>
+        /// <inheritdoc cref="ILoggingHelper.Write(string, object, string)"/>
         public static bool Write(string message, object level, string obs)
         {
             return LogDefault.Write(message, level, obs);
         }
 
+        /// <inheritdoc cref="ILoggingHelper.Trace(string, string)"/>
+        public static bool Trace(string message, string obs = null)
+        {
+            return LogDefault.Trace(message, obs);
+        }
 
+        /// <inheritdoc cref="ILoggingHelper.Debug(string, string)"/>
+        public static bool Debug(string message, string obs = null)
+        {
+            return LogDefault.Write(message, Level.DEBUG, obs);
+        }
 
-        /// <summary>
-        /// Identifies the name of the calling method (stack).
-        /// </summary>
-        /// <param name="indStack">Initial index for the call stack. E.g., if 2, it analyzes from the antepenultimate call.</param>
-        /// <param name="levelPath">Maximum hierarchical level to be recorded in the method path (end index). E.g., 5.</param>
-        /// <returns>The name of the calling method (stack).</returns>
+        /// <inheritdoc cref="ILoggingHelper.Info(string, string)"/>
+        public static bool Info(string message, string obs = null)
+        {
+            return LogDefault.Write(message, Level.INFO, obs);
+        }
+
+        /// <inheritdoc cref="ILoggingHelper.Warning(string, string)"/>
+        public static bool Warning(string message, string obs = null)
+        {
+            return LogDefault.Write(message, Level.WARNING, obs);
+        }
+
+        /// <inheritdoc cref="ILoggingHelper.Error(string, string)"/>
+        public static bool Error(string message, string obs = null)
+        {
+            return LogDefault.Write(message, Level.ERROR, obs);
+        }
+
+        /// <inheritdoc cref="ILoggingHelper.Critical(string, string)"/>
+        public static bool Critical(string message, string obs = null)
+        {
+            return LogDefault.Write(message, Level.CRITICAL, obs);
+        }
+
+        /// <inheritdoc cref="ILoggingHelper.GetCallingMethodName(int, int)"/>
         public static string GetCallingMethodName(int indStack, int levelPath)
         {
             return LogDefault.GetCallingMethodName(indStack, levelPath);

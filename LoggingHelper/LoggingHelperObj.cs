@@ -9,103 +9,63 @@ namespace LH
     /// <summary>
     /// Library for logging.
     /// </summary>
-    public class LoggingHelperObj
+    public class LoggingHelperObj : ILoggingHelper
     {
-        /// <summary>
-        /// Maximum hierarchical level to be logged in the method stack (final index). Example: 5
-        /// </summary>
+        /// <inheritdoc/>
         public int LevelStack { get; set; } = 4;
 
-        /// <summary>
-        /// The number of days after which the log file should be considered outdated and will be deleted. Default is 3 days.
-        /// </summary>
+        /// <inheritdoc/>
         public int LogValidity { get; set; } = 3;
 
-        /// <summary>
-        /// Minimum level to be logged in the log file.
-        /// <para>Example: If set to 2, TRACE and DEBUG logs will not be logged.</para>
-        /// <para>Enter a negative number to avoid recording logs.</para>
-        /// </summary>
+        /// <inheritdoc/>
         public int LogLevelFile { get; set; } = 0;
 
-        /// <summary>
-        /// Minimum level to be logged in the log trace.
-        /// <para>Example: If set to 2, TRACE and DEBUG logs will not be logged.</para>
-        /// <para>Enter a negative number to avoid recording logs.</para>
-        /// </summary>
+        /// <inheritdoc/>
         public int LogLevelTrace { get; set; } = -1;
 
-        /// <summary>
-        /// Minimum level to be logged in the log console.
-        /// <para>Example: If set to 2, TRACE and DEBUG logs will not be logged.</para>
-        /// <para>Enter a negative number to avoid recording logs.</para>
-        /// </summary>
-        public int LogLevelConsole { get; set; } = -1;
+        /// <inheritdoc/>
+        public int LogLevelConsole { get; set; } = 0;
 
         private bool _firstChecked = false;
         private string _logPath = ".\\LOG_LH\\Logging_general.log";
 
-        /// <summary>
-        /// Location where the log file will be stored.
-        /// (Specify a different location or filename to use different log files).
-        /// </summary>
+        /// <inheritdoc/>
         public string LogPathFile
         {
             get => _logPath;
             set { _logPath = value; CheckFile(LogValidity); }
         }
 
-        /// <summary>
-        /// The format of the log message.
-        /// </summary>
+        /// <inheritdoc/>
         public string FormatLogOutput { get; set; } = "<dd/MM/yyyy HH:mm:ss.fff> [<level>] (<stack>) <message> | <obs>"; // "{0} [{1}] ({2}) {3}{4}"
 
 
-        /// <summary>
-        /// Log levels.
-        /// </summary>
+        /// <inheritdoc cref="LoggingHelper.Level"/>
         public enum Level
         {
-            /// <summary>
-            /// Used only for tracing the code and trying to find a specific part of a function.
-            /// </summary>
+            /// <inheritdoc cref="LoggingHelper.Level.TRACE"/>
             TRACE,
 
-            /// <summary>
-            /// Information useful for diagnosis.
-            /// </summary>
+            /// <inheritdoc cref="LoggingHelper.Level.DEBUG"/>
             DEBUG,
 
-            /// <summary>
-            /// Information generally useful for logging (start/stop of a service, configuration assumptions, etc.). Information I want to have available, but don't typically care about under normal circumstances.
-            /// </summary>
+            /// <inheritdoc cref="LoggingHelper.Level.INFO"/>
             INFO,
 
-            /// <summary>
-            /// Anything that may cause strange behavior in the application, but for which I am automatically recovering.
-            /// </summary>
+            /// <inheritdoc cref="LoggingHelper.Level.WARNING"/>
             WARNING,
 
-            /// <summary>
-            /// Any error that is fatal to the operation but not the service or application (cannot open a needed file, missing data, etc.). These errors will force user (administrator or direct user) intervention. They are usually reserved for incorrect connection strings, missing services, etc.
-            /// </summary>
+            /// <inheritdoc cref="LoggingHelper.Level.ERROR"/>
             ERROR,
 
-            /// <summary>
-            /// Any error that is forcing a shutdown of the service or application to prevent further data loss (or further significant data loss). Typically used only for the most heinous errors and situations where there is guaranteed to have been an error that has caused some data corruption or loss.
-            /// </summary>
+            /// <inheritdoc cref="LoggingHelper.Level.CRITICAL"/>
             CRITICAL
         }
 
 
 
 
-
-        /// <summary>
-        /// Checks if the log file is older than a specified number of days and deletes it if necessary. It also checks if the directory is valid and creates it if it doesn't exist.
-        /// </summary>
-        /// <param name="days">The number of days after which the log file should be considered outdated. Default is 3 days.</param>
-        /// <param name="hidden">Specifies whether the directory should be hidden. Default is true.</param>
+        /// <inheritdoc/>
         public bool CheckFile(int days = 3, bool hidden = true)
         {
             _firstChecked = true;
@@ -122,10 +82,7 @@ namespace LH
             return true;
         }
 
-        /// <summary>
-        /// Deletes the log file defined in the LogPath attribute.
-        /// </summary>
-        /// <returns>True if the file was successfully deleted, otherwise false.</returns>
+        /// <inheritdoc/>
         public bool DeleteLogFile()
         {
             if (File.Exists(LogPathFile))
@@ -143,15 +100,9 @@ namespace LH
             }
 
             return true; // If the file doesn't exist, consider it as deleted
-        }        
+        }
 
-        /// <summary>
-        /// Write a message to the log.
-        /// </summary>
-        /// <param name="message">Message to be logged</param>
-        /// <param name="level">Set the level of this log. TRACE = 0, DEBUG = 1, INFO = 2, WARNING = 3, ERROR = 4, CRITICAL = 5</param>
-        /// <param name="obs">Provide any additional information you deem necessary (optional)</param>
-        /// <returns>Returns true if the log was written successfully; otherwise, returns false</returns>
+        /// <inheritdoc/>
         public bool Write(string message, object level, string obs)
         {
             int intLevelMessage = Treatment.GetIntLevelMessage(level);
@@ -160,11 +111,11 @@ namespace LH
 
             if (LogLevelTrace >= 0 && intLevelMessage >= LogLevelTrace)
             {
-                WriteLog.ToTrace(message, ((Level)intLevelMessage).ToString(), callingMethod, obs);                
+                WriteLog.ToTrace(message, ((Level)intLevelMessage).ToString(), callingMethod, obs);
             }
 
             if (LogLevelConsole >= 0 && intLevelMessage >= LogLevelConsole)
-            {                
+            {
                 WriteLog.ToConsole(message, ((Level)intLevelMessage).ToString(), callingMethod, obs);
             }
 
@@ -182,12 +133,43 @@ namespace LH
             return true;
         }
 
-        /// <summary>
-        /// Identifies the name of the calling method (stack).
-        /// </summary>
-        /// <param name="indStack">Initial index for the call stack. E.g., if 2, it analyzes from the antepenultimate call.</param>
-        /// <param name="levelPath">Maximum hierarchical level to be recorded in the method path (end index). E.g., 5.</param>
-        /// <returns>The name of the calling method (stack).</returns>
+        /// <inheritdoc/>
+        public bool Trace(string message, string obs = null)
+        {
+            return Write(message, Level.TRACE, obs);
+        }
+
+        /// <inheritdoc/>
+        public bool Debug(string message, string obs = null)
+        {
+            return Write(message, Level.DEBUG, obs);
+        }
+
+        /// <inheritdoc/>
+        public bool Info(string message, string obs = null)
+        {
+            return Write(message, Level.INFO, obs);
+        }
+
+        /// <inheritdoc/>
+        public bool Warning(string message, string obs = null)
+        {
+            return Write(message, Level.WARNING, obs);
+        }
+
+        /// <inheritdoc/>
+        public bool Error(string message, string obs = null)
+        {
+            return Write(message, Level.ERROR, obs);
+        }
+
+        /// <inheritdoc/>
+        public bool Critical(string message, string obs = null)
+        {
+            return Write(message, Level.CRITICAL, obs);
+        }
+
+        /// <inheritdoc/>
         public string GetCallingMethodName(int indStack, int levelPath)
         {
             StackFrame frame = new StackFrame(indStack);
