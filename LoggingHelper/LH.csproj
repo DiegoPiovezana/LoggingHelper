@@ -1,41 +1,43 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-     <TargetFrameworks>net452;netstandard2.0;netstandard2.1</TargetFrameworks>
-     <ApplicationIcon>Images\LoggingHelper_icon.ico</ApplicationIcon>
-     <GenerateDocumentationFile>True</GenerateDocumentationFile>
-     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-     <Title>LoggingHelper</Title>
-     <PackageIcon>LoggingHelper_icon.png</PackageIcon>
-     <Authors>Diêgo Piovezana</Authors>
-     <Company>DiegoPiov</Company>
-     <Description>Library for easy logging.</Description>
-     <PackageProjectUrl>https://github.com/DiegoPiovezana/LoggingHelper</PackageProjectUrl>
-     <RepositoryUrl>https://github.com/DiegoPiovezana/LoggingHelper</RepositoryUrl>
-     <PackageTags>log;logging;logger;tracing;eventlog;logfiles;trace;logs;helper;happy;happyHelper</PackageTags>
-     <PackageReleaseNotes>- Ability to log messages to the console
-- Customize log output format using `FormatLogOutput`
-- Default inclusion of millisecond logging
-- Set log level using enumeration, number or text</PackageReleaseNotes>
-     <PackageLicenseFile>License.txt</PackageLicenseFile>
-     <AssemblyVersion>1.1.0</AssemblyVersion>
-     <FileVersion>1.1.0</FileVersion>
-     <Version>1.2.0</Version>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net452;netstandard2.0;netstandard2.1</TargetFrameworks>
+		<ApplicationIcon>Images\LoggingHelper_icon.ico</ApplicationIcon>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Title>LoggingHelper</Title>
+		<PackageIcon>LoggingHelper_icon.png</PackageIcon>
+		<Authors>Diêgo Piovezana</Authors>
+		<Company>DiegoPiov</Company>
+		<Description>Library for easy logging.</Description>
+		<PackageProjectUrl>https://github.com/DiegoPiovezana/LoggingHelper</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/DiegoPiovezana/LoggingHelper</RepositoryUrl>
+		<PackageTags>log;logging;logger;tracing;eventlog;logfiles;trace;logs;helper;happy;happyHelper</PackageTags>
+		<PackageReleaseNotes>
+			- Ability to log messages to the console
+			- Customize log output format using `FormatLogOutput`
+			- Default inclusion of millisecond logging
+			- Set log level using enumeration, number or text
+		</PackageReleaseNotes>
+		<PackageLicenseFile>License.txt</PackageLicenseFile>
+		<AssemblyVersion>1.1.0</AssemblyVersion>
+		<FileVersion>1.1.0</FileVersion>
+		<Version>1.2.0</Version>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Content Include="Images\LoggingHelper_icon.ico" />
-  </ItemGroup>
+	<ItemGroup>
+		<Content Include="Images\LoggingHelper_icon.ico" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Include="..\..\Design\LoggingHelper_icon.png" Link="Images\LoggingHelper_icon.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-    <None Include="..\License.txt">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
-
+	<ItemGroup>
+		<None Include="..\..\Design\LoggingHelper_icon.png" Link="Images\LoggingHelper_icon.png">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+		<None Include="..\License.txt">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+	
 </Project>
