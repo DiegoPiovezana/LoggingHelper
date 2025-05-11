@@ -135,7 +135,7 @@
         /// <inheritdoc cref="ILoggingHelper.Trace(string, string)"/>
         public static bool Trace(string message, string obs = null)
         {
-            return LogDefault.Trace(message, obs);
+            return LogDefault.Write(message, Level.TRACE, obs);
         }
 
         /// <inheritdoc cref="ILoggingHelper.Debug(string, string)"/>
